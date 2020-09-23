@@ -9,7 +9,7 @@ echo 'auto sync start'
 git add -A
 nothingStr =`git commit -m 'auto sync' | grep 'nothing to commit'`
 
-if [[ ! -z $nothingStr ]]; then
+if [[ ! -z "$nothingStr" ]]; then
 	echo $nothingStr
 	exit 0 
 fi
