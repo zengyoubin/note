@@ -1,6 +1,4 @@
 #!/bin/sh
-
-
 cd $1
 
 echo `pwd`
