@@ -1,4 +1,5 @@
 #!/bin/sh
+
 cd $1
 
 echo `pwd`
@@ -12,4 +13,6 @@ if [[ ! -z "$nothingStr" ]]; then
 	exit 0 
 fi
 
-echo '1111'
+git push
+
+echo 'auto sync end'
