@@ -7,7 +7,7 @@ echo `pwd`
 echo 'auto sync start'
 
 git add -A
-nothingStr =`git commit -m 'auto sync' | grep 'nothing to commit'`
+nothingStr = `git commit -m 'auto sync' | grep 'nothing to commit'`
 
 echo "$nothingStr"
 
