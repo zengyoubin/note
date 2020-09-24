@@ -68,7 +68,6 @@ gh_toc_md2html() {
     # echo $URL 1>&2
     OUTPUT="$(curl -s --user-agent "$gh_user_agent" \
         --data-binary @"$gh_file_md" -H "Content-Type:text/plain" \
-        ${AUTHORIZATION} \
         $URL)"
 
     if [ "$?" != "0" ]; then
