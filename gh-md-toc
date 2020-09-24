@@ -69,6 +69,10 @@ gh_toc_md2html() {
     OUTPUT="$(curl -s --user-agent "$gh_user_agent" \
         --data-binary @"$gh_file_md" -H "Content-Type:text/plain" \
         $URL)"
+    # OUTPUT="$(curl -s --user-agent "$gh_user_agent" \
+    #     --data-binary @"$gh_file_md" -H "Content-Type:text/plain" \
+    #     ${AUTHORIZATION} \
+    #     $URL)"
 
     if [ "$?" != "0" ]; then
         echo "XXNetworkErrorXX"
