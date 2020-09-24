@@ -73,7 +73,8 @@ gh_toc_md2html() {
     #     --data-binary @"$gh_file_md" -H "Content-Type:text/plain" \
     #     ${AUTHORIZATION} \
     #     $URL)"
-
+    # echo '111'    
+    echo $OUTPUT
     if [ "$?" != "0" ]; then
         echo "XXNetworkErrorXX"
     fi
