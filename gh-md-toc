@@ -53,17 +53,17 @@ gh_toc_md2html() {
     local gh_file_md=$1
     URL=https://api.github.com/markdown/raw
 
-    if [ ! -z "$GH_TOC_TOKEN" ]; then
-        TOKEN=$GH_TOC_TOKEN
-    else
-        TOKEN_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/token.txt"
-        if [ -f "$TOKEN_FILE" ]; then
-            TOKEN="$(cat $TOKEN_FILE)"
-        fi
-    fi
-    if [ ! -z "${TOKEN}" ]; then
-        AUTHORIZATION="--header \"Authorization: token ${TOKEN}\""
-    fi
+    # if [ ! -z "$GH_TOC_TOKEN" ]; then
+    #     TOKEN=$GH_TOC_TOKEN
+    # else
+    #     TOKEN_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/token.txt"
+    #     if [ -f "$TOKEN_FILE" ]; then
+    #         TOKEN="$(cat $TOKEN_FILE)"
+    #     fi
+    # fi
+    # if [ ! -z "${TOKEN}" ]; then
+    #     AUTHORIZATION="--header \"Authorization: token ${TOKEN}\""
+    # fi
 
     # echo $URL 1>&2
     OUTPUT="$(curl -s --user-agent "$gh_user_agent" \
@@ -164,7 +164,7 @@ gh_toc(){
             local dt=`date +'%F_%H%M%S'`
             local ext=".orig.${dt}"
             local toc_path="${gh_src}.toc.${dt}"
-            local toc_footer="<!-- Added by: `whoami`, at: `date` -->"
+            # local toc_footer="<!-- Added by: `whoami`, at: `date` -->"
             # http://fahdshariff.blogspot.ru/2012/12/sed-mutli-line-replacement-between-two.html
             # clear old TOC
             sed -i${ext} "/${ts}/,/${te}/{//!d;}" "$gh_src"
