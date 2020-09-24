@@ -53,28 +53,23 @@ gh_toc_md2html() {
     local gh_file_md=$1
     URL=https://api.github.com/markdown/raw
 
-    # if [ ! -z "$GH_TOC_TOKEN" ]; then
-    #     TOKEN=$GH_TOC_TOKEN
-    # else
-    #     TOKEN_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/token.txt"
-    #     if [ -f "$TOKEN_FILE" ]; then
-    #         TOKEN="$(cat $TOKEN_FILE)"
-    #     fi
-    # fi
-    # if [ ! -z "${TOKEN}" ]; then
-    #     AUTHORIZATION="--header \"Authorization: token ${TOKEN}\""
-    # fi
+    if [ ! -z "$GH_TOC_TOKEN" ]; then
+        TOKEN=$GH_TOC_TOKEN
+    else
+        TOKEN_FILE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/token.txt"
+        if [ -f "$TOKEN_FILE" ]; then
+            TOKEN="$(cat $TOKEN_FILE)"
+        fi
+    fi
+    if [ ! -z "${TOKEN}" ]; then
+        AUTHORIZATION="--header \"Authorization: token ${TOKEN}\""
+    fi
 
     # echo $URL 1>&2
     OUTPUT="$(curl -s --user-agent "$gh_user_agent" \
         --data-binary @"$gh_file_md" -H "Content-Type:text/plain" \
         $URL)"
-    # OUTPUT="$(curl -s --user-agent "$gh_user_agent" \
-    #     --data-binary @"$gh_file_md" -H "Content-Type:text/plain" \
-    #     ${AUTHORIZATION} \
-    #     $URL)"
-    # echo '111'    
-    echo $OUTPUT
+
     if [ "$?" != "0" ]; then
         echo "XXNetworkErrorXX"
     fi
@@ -165,7 +160,7 @@ gh_toc(){
             local dt=`date +'%F_%H%M%S'`
             local ext=".orig.${dt}"
             local toc_path="${gh_src}.toc.${dt}"
-            # local toc_footer="<!-- Added by: `whoami`, at: `date` -->"
+            local toc_footer="<!-- Added by: `whoami`, at: `date` -->"
             # http://fahdshariff.blogspot.ru/2012/12/sed-mutli-line-replacement-between-two.html
             # clear old TOC
             sed -i${ext} "/${ts}/,/${te}/{//!d;}" "$gh_src"
@@ -186,7 +181,7 @@ gh_toc(){
             if [ -z $no_backup ]; then
                 echo "!! Origin version of the file: '${gh_src}${ext}'"
                 echo "!! TOC added into a separate file: '${toc_path}'"
-	    fi
+        fi
             echo
         fi
     fi
@@ -199,11 +194,11 @@ gh_toc(){
 # It's need if TOC is generated for multiple documents.
 #
 gh_toc_grab() {
-	# if closed <h[1-6]> is on the new line, then move it on the prev line
-	# for example:
-	# 	was: The command <code>foo1</code>
-	# 		 </h1>
-	# 	became: The command <code>foo1</code></h1>
+    # if closed <h[1-6]> is on the new line, then move it on the prev line
+    # for example:
+    #   was: The command <code>foo1</code>
+    #        </h1>
+    #   became: The command <code>foo1</code></h1>
     sed -e ':a' -e 'N' -e '$!ba' -e 's/\n<\/h/<\/h/g' |
     # find strings that corresponds to template
     grep -E -o '<a.*id="user-content-[^"]*".*</h[1-6]' |
