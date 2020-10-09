@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## [名词](./grammar/名词)
 
 You can use the [editor on GitHub](https://github.com/zengyoubin/note/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
