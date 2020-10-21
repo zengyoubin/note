@@ -1,21 +1,24 @@
 #!/bin/sh
 
-cd $1
-
-echo `pwd`
 echo 'auto sync start'
+for line in `cat ./sync_dir.env`
+do
+    cd $line
+    echo `pwd`
+	
 
-git pull
+	git pull
 
-git add -A
+	git add -A
 
-nothingStr=`git commit -m 'auto sync' | grep 'nothing to commit'`
+	nothingStr=`git commit -m 'auto sync' | grep 'nothing to commit'`
 
-if [[ ! -z "$nothingStr" ]]; then
-	echo $nothingStr
-	exit 0 
-fi
+	if [[ ! -z "$nothingStr" ]]; then
+		echo $nothingStr
+		exit 0 
+	fi
 
-git push
-
+	git push
+done
 echo 'auto sync end'
+
