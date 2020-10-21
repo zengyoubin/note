@@ -15,7 +15,7 @@ do
 
 	if [[ ! -z "$nothingStr" ]]; then
 		echo $nothingStr
-		exit 0 
+		continue
 	fi
 
 	git push
