@@ -3,7 +3,7 @@
 echo 'auto sync start'
 for line in `cat ./sync_dir.env`
 do
-    cd $line
+	echo $line | cd 
     echo `pwd`
 	
 
