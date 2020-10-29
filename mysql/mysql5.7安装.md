@@ -4,7 +4,11 @@
 
 #### 文件下载
 
-`wget 'https://cdn.mysql.com/archives/mysql-5.7/mysql-5.7.27.tar.gz' `
+```shell
+wget 'https://cdn.mysql.com/archives/mysql-5.7/mysql-5.7.27.tar.gz' 
+```
+
+
 
 #### 安装依赖
 
@@ -30,4 +34,28 @@ chown mysql:mysql /var/mysql/data
 
 ### 编译安装
 
-编译
+#### 解压
+
+```shell
+ tar -zxvf mysql-5.7.27.tar.gz
+ cd cd mysql-5.7.27
+```
+
+#### 编译安装
+
+```shell
+cmake \
+-DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
+-DMYSQL_UNIX_ADDR=/usr/local/mysql/mysql.sock \
+-DDEFAULT_CHARSET=utf8mb4 \
+-DDEFAULT_COLLATION=utf8mb4_general_ci \
+-DWITH_INNOBASE_STORAGE_ENGINE=1 \
+-DWITH_ARCHIVE_STORAGE_ENGINE=1 \
+-DWITH_BLACKHOLE_STORAGE_ENGINE=1 \
+-DMYSQL_DATADIR=/var/mysql/data \
+-DMYSQL_TCP_PORT=3306 \
+-DWITH_BOOST=boost
+
+make && make install
+```
+
