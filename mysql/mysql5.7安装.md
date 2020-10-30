@@ -21,8 +21,14 @@ useradd -r -g mysql mysql
 
 创建数据库目录
 
-```
+```shell
 mkdir -p /var/mysql/data
 chown mysql:mysql /var/mysql/data
+```
+
+所有者及所属组改为mysql
+
+```
+chown -R mysql.mysql /data/mysql/mysql-5.7.27
 ```
 
