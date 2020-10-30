@@ -20,7 +20,7 @@ xz -d rpcsvc-proto-1.4.1.tar.xz
 tar -xvf rpcsvc-proto-1.4.1.tar
 cd rpcsvc-proto-1.4.1
 ./configure
-make &
+make && make install 
 
 ```
 
