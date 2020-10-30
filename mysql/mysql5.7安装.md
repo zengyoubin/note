@@ -5,7 +5,7 @@
 #### 文件下载
 
 ```shell
-wget 'https://cdn.mysql.com/archives/mysql-5.7/mysql-boost-5.7.27.tar.gz' 
+wget https://cdn.mysql.com/archives/mysql-5.7/mysql-boost-5.7.27.tar.gz
 ```
 
 
@@ -14,6 +14,14 @@ wget 'https://cdn.mysql.com/archives/mysql-5.7/mysql-boost-5.7.27.tar.gz'
 
 ```shell
 sudo yum install -y gcc gcc-c++ ncurses-devel perl cmake libtirpc-devel
+# 解决 Could not find rpcgen 问题
+wget https://github.com/thkukuk/rpcsvc-proto/releases/download/v1.4.1/rpcsvc-proto-1.4.1.tar.xz
+xz -d rpcsvc-proto-1.4.1.tar.xz
+tar -xvf rpcsvc-proto-1.4.1.tar
+cd rpcsvc-proto-1.4.1
+./configure
+make &
+
 ```
 
 #### 账户创建
