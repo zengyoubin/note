@@ -45,7 +45,7 @@ basedir = /data/mysql/mysql-5.7.27
 datadir = /data/mysql/mysql-5.7.27/data
 port = 3306
 socket = /tmp/mysql.sock
-character-set-server=utf8
+character-set-server=utf8mb4
 
 log-error = /data/mysql/mysql-5.7.27/data/mysqld.log
 pid-file = /data/mysql/mysql-5.7.27/data/mysqld.pid
