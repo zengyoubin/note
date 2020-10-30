@@ -67,3 +67,25 @@ cmake \
 make && make install
 ```
 
+安装时遇到内存不足，通过设置2G交换分区来解决该问题
+
+```shell
+#获取要增加的2G的SWAP文件块
+dd if=/dev/zero of=/swapfile bs=1k count=2048000
+#创建SWAP文件
+mkswap /swapfile 
+#激活SWAP文件
+swapon /swapfile   
+#查看SWAP信息是否正确
+swapon -s  
+#添加到fstab文件中让系统引导时自动启动
+echo "/var/swapfile swap swap defaults 0 0" >> /etc/fstab
+```
+
+swapfile文件的路径在/var/下，编译完后, 如果不想要交换分区了, 可以删除。
+
+```
+swapoff /swapfile
+rm -rf /swapfile
+```
+
