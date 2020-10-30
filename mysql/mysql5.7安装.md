@@ -3,7 +3,7 @@
 #### 文件下载
 
 ```shell
-wget https://cdn.mysql.com/archives/mysql-5.7/mysql-5.7.27-linux-glibc2.12-x86_64.tar
+wget https://cdn.mysql.com/archives/mysql-5.7/mysql-5.7.27-linux-glibc2.12-x86_64.tar.gz
 ```
 
 
@@ -31,8 +31,8 @@ chown mysql:mysql /var/mysql/data
 #### 解压
 
 ```shell
- tar -zxvf mysql-boost-5.7.27.tar.gz
- cd mysql-5.7.27
+tar -zxvf mysql-5.7.27-linux-glibc2.12-x86_64.tar.gz
+mv mysql-5.7.27-linux-glibc2.12-x86_64 mysql-5.7.27
 ```
 
 #### 编译安装
