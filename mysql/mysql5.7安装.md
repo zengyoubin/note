@@ -63,7 +63,9 @@ cd /data/mysql/mysql-5.7.27/bin
 
 初始化完成查看临时密码
 
-```
+```shell
+grep 'temporary password' mysqld.log
+
 [Note] A temporary password is generated for root@localhost: 53_w6R1suD(=
 ```
 
