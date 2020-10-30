@@ -41,6 +41,8 @@ chown -R mysql.mysql /data/mysql/mysql-5.7.27
 # *** default location during install, and will be replaced if you
 # *** upgrade to a newer version of MySQL.
 
+[mysqld]
+
 basedir = /data/mysql/mysql-5.7.27
 datadir = /data/mysql/mysql-5.7.27/data
 port = 3306
