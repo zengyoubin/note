@@ -53,3 +53,17 @@ log-error = /data/mysql/mysql-5.7.27/data/mysqld.log
 pid-file = /data/mysql/mysql-5.7.27/data/mysqld.pid
 ```
 
+初始化mysqld
+
+```shell
+su mysql
+cd /data/mysql/mysql-5.7.27/bin
+./mysqld --initialize --user=mysql --basedir=/data/mysql/mysql-5.7.27 --datadir=/data/mysql/mysql-5.7.27/data
+```
+
+初始化完成查看临时密码
+
+```
+[Note] A temporary password is generated for root@localhost: 53_w6R1suD(=
+```
+
