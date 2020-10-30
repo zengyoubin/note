@@ -13,7 +13,7 @@ wget 'https://cdn.mysql.com/archives/mysql-5.7/mysql-boost-5.7.27.tar.gz'
 #### 安装依赖
 
 ```shell
-sudo yum install -y gcc gcc-c++ ncurses-devel perl cmake 
+sudo yum install -y gcc gcc-c++ ncurses-devel perl cmake libtirpc-devel
 ```
 
 #### 账户创建
