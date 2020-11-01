@@ -40,3 +40,9 @@
 
 ## 日志模块
 
+主要是Server层的`binlog`和存储引擎层的`redo log 、undo log`
+
+### 重要的日志模块：redo log
+
+#### WAL（Wirte-Ahead Logging）
+
