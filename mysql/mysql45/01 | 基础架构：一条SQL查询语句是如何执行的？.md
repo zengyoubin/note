@@ -1,4 +1,4 @@
-## MySQL基本架构
+# MySQL基本架构
 
 ### MySQL可以分为两层Server层和存储引擎层。
 
@@ -38,7 +38,7 @@
 
 ​	接下来执行器会根据标的引擎定义，去使用这个引擎提供的接口。
 
-## 日志模块
+# 日志模块
 
 主要是Server层的`binlog`和Inno DB存储引擎层的`redo log 、undo log`
 
