@@ -122,3 +122,7 @@ select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx
 # 索引
 
 ​	索引的出现其实就是为了提高数据查询的效率，就像书的目录一样。
+
+### 索引的常见模型
+
+三种常见、也比较简单的数据结构，它们分别是哈希表、有序数组和搜索树。
