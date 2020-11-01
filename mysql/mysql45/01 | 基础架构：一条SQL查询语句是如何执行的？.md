@@ -62,11 +62,19 @@
 
 #### 重要参数
 
-##### 
+##### `innodb_flush_log_at_trx_commit`
+
+​	这个参数设置成1，表示每次事务的redo log都直接持久化到磁盘。
 
 ### 重要的日志模块：binlog
 
 ​	binlog属于Server层，不具备`crash-safe`能力，只能用于归档。
+
+#### 重要参数
+
+`sync_binlog`
+
+​	这个参数设置成1，表示每次事务的binlog都持久化到磁盘。
 
 ### binlog和redo log区别
 
