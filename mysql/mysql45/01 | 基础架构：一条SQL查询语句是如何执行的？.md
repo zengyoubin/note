@@ -54,5 +54,8 @@
 
 ![redo log](image/16a7950217b3f0f4ed02db5db59562a7.png)
 
-- write pos 是当前记录的位置，一边写一遍后移
-- 
+- `write pos` 是当前记录的位置，一边写一遍后移
+- `check point` 是当前要擦除的位置，往后推移并且循环，擦除记录前要把记录更新到数据文件。
+- `write pos` 和`check point`之间空着的部分，可以用来记录新的操作。如果`write pos`追上`check point`，表示redo log满了，这时候不能再执行新的更新，得停下里先擦掉一些记录，把`check point`往前推进。
+
+有了 redo log，InnoDB 就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 `crash-safe`。
