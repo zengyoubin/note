@@ -40,7 +40,7 @@
 
 ## 日志模块
 
-主要是Server层的`binlog`和存储引擎层的`redo log 、undo log`
+主要是Server层的`binlog`和Inno DB存储引擎层的`redo log 、undo log`
 
 ### 重要的日志模块：redo log
 
@@ -59,3 +59,5 @@
 - `write pos` 和`check point`之间空着的部分，可以用来记录新的操作。如果`write pos`追上`check point`，表示redo log满了，这时候不能再执行新的更新，得停下里先擦掉一些记录，把`check point`往前推进。
 
 有了 redo log，InnoDB 就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 `crash-safe`。
+
+### 重要的日志模块：binlog
