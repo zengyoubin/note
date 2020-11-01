@@ -88,3 +88,10 @@
 
 ![mysql update 更新流程如](image/2e5bff4910ec189fe1ee6e2ecc7b4bbe.png)
 
+
+
+# 事务
+
+​	**ACID（Atomicity、Consistency、Isolation、Durability，即原子性、一致性、隔离性、持久性）**
+
+​	当数据库上有多个事务同时执行的时候，就可能出现**脏读（dirty read）、不可重复读（non-repeatable read）、幻读（phantom read）**的问题，为了解决这些问题，就有了“**隔离级别**”的概念。
