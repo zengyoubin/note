@@ -98,3 +98,6 @@
 
 ​	SQL 标准的事务隔离级别包括：**读未提交（read uncommitted）、读提交（read committed）、可重复读（repeatable read）和串行化（serializable ）**
 
+### 事务隔离的实现
+
+​	在 MySQL 中，实际上每条记录在更新的时候都会同时记录一条回滚操作。记录上的最新值，通过回滚操作，都可以得到前一个状态的值（即是undo log）。
