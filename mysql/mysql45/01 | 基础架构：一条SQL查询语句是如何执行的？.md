@@ -130,3 +130,8 @@ select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx
 - 哈希表这种结构适用于只有等值查询的场景，比如 Memcached 及其他一些 NoSQL 引擎。
 - 有序数组索引只适用于静态存储引擎
 - N 叉树由于在读写上的性能优点，以及适配磁盘的访问模式，已经被广泛应用在数据库引擎中了。
+
+### InnoDB 的索引模型
+
+​	在 InnoDB 中，表都是根据**主键顺序以索引的形式存放**的，这种存储方式的表称为**索引组织表**。InnoDB 使用了 **B+ 树索引模型**，所以数据都是存储在 B+ 树中的。
+
