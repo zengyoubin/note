@@ -135,3 +135,5 @@ select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx
 
 ​	在 InnoDB 中，表都是根据**主键顺序以索引的形式存放**的，这种存储方式的表称为**索引组织表**。InnoDB 使用了 **B+ 树索引模型**，所以数据都是存储在 B+ 树中的。
 
+###### 示例
+
