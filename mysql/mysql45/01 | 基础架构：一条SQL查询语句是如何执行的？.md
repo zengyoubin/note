@@ -141,3 +141,17 @@ select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx
 
 ​	这个表的建表语句是：
 
+```sql
+
+create table T(
+  id int primary key, 
+  k int not null, 
+  name varchar(16),
+  index (k)
+)engine=InnoDB;
+```
+
+​	表中 R1~R5 的 (ID,k) 值分别为 (100,1)、(200,2)、(300,3)、(500,5) 和 (600,6)，两棵树的示例示意图如下。
+
+![inno db 索引组织结构图](image/dcda101051f28502bd5c4402b292e38d.png)
+
