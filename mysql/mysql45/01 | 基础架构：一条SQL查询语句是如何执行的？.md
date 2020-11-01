@@ -129,3 +129,4 @@ select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx
 
 - 哈希表这种结构适用于只有等值查询的场景，比如 Memcached 及其他一些 NoSQL 引擎。
 - 有序数组索引只适用于静态存储引擎
+- N 叉树由于在读写上的性能优点，以及适配磁盘的访问模式，已经被广泛应用在数据库引擎中了。
