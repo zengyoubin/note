@@ -137,3 +137,7 @@ select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx
 
 ###### 示例
 
+​	假设，我们有一个主键列为 ID 的表，表中有字段 k，并且在 k 上有索引。
+
+​	这个表的建表语句是：
+
