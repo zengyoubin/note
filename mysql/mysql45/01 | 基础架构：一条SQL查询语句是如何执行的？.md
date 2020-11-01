@@ -155,3 +155,6 @@ create table T(
 
 ![inno db 索引组织结构图](image/dcda101051f28502bd5c4402b292e38d.png)
 
+根据叶子节点的内容，索引类型分为主键索引和非主键索引。
+
+主键索引的叶子节点存的是**整行数据**。在 InnoDB 里，主键索引也被称为**聚簇索引（clustered index）**。
