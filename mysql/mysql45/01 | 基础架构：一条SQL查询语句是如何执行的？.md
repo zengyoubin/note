@@ -2,7 +2,7 @@
 
 ### MySQL可以分为两层Server层和存储引擎层。
 
-![MySQL逻辑架构图](/Users/zyb/git/me/note/mysql/mysql45/image/0d2070e8f84c4801adbfa03bda1f98d9.png)
+![MySQL逻辑架构图](image/0d2070e8f84c4801adbfa03bda1f98d9.png)
 
 #### Server层
 
@@ -51,3 +51,8 @@
 ##### redo log
 
 ​	InnoDB 的 redo log 是固定大小的，比如可以配置为一组 4 个文件，每个文件的大小是 1GB，那么总共就可以记录 4GB 的操作。从头开始写，写到末尾就又回到开头循环写。
+
+![redo log](image/16a7950217b3f0f4ed02db5db59562a7.png)
+
+- write pos 是当前记录的位置，一边写一遍后移
+- 
