@@ -126,3 +126,6 @@ select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx
 ### 索引的常见模型
 
 三种常见、也比较简单的数据结构，它们分别是哈希表、有序数组和搜索树。
+
+- 哈希表这种结构适用于只有等值查询的场景，比如 Memcached 及其他一些 NoSQL 引擎。
+- 有序数组索引只适用于静态存储引擎
