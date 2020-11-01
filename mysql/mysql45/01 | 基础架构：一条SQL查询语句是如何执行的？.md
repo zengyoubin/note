@@ -60,6 +60,10 @@
 
 有了 redo log，InnoDB 就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 `crash-safe`。
 
+#### 重要参数
+
+##### 
+
 ### 重要的日志模块：binlog
 
 ​	binlog属于Server层，不具备`crash-safe`能力，只能用于归档。
@@ -72,4 +76,7 @@
 
 ### 两阶段提交
 
-​	update语句更新流程图
+​	update语句更新流程图，图中浅色框表示是在 InnoDB 内部执行的，深色框表示是在执行器中执行的。
+
+![mysql update 更新流程如](image/2e5bff4910ec189fe1ee6e2ecc7b4bbe.png)
+
