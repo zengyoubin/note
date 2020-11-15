@@ -82,11 +82,15 @@
 2. redo log 是物理日志，记录的是“在某个数据页上做了什么修改”；binlog 是逻辑日志，记录的是这个语句的原始逻辑，比如“给 ID=2 这一行的 c 字段加 1 ”。
 3. redo log 是循环写的，空间固定会用完；binlog 是可以追加写入的。“追加写”是指 binlog 文件写到一定大小后会切换到下一个，并不会覆盖以前的日志
 
-### 两阶段提交
+# MySQL更新
+
+## 两阶段提交
 
 ​	update语句更新流程图，图中浅色框表示是在 InnoDB 内部执行的，深色框表示是在执行器中执行的。
 
 ![mysql update 更新流程如](image/2e5bff4910ec189fe1ee6e2ecc7b4bbe.png)
+
+## change buffer
 
 
 
