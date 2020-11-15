@@ -142,7 +142,6 @@
 针对以上进行具体示例分析：
 
 ```sql
-
 CREATE TABLE `t` (
   `id` int(11) NOT NULL,
   `k` int(11) DEFAULT NULL,
@@ -191,8 +190,9 @@ insert into t(id, k) values(1,1),(2,2);
 
 ​	如果把事务 A 的查询语句 select * from t where id=1 修改一下，加上 lock in share mode 或 for update，也都可以读到版本号是 101 的数据，返回的 k 的值是 3。下面这两个 select 语句，就是分别加了读锁（S 锁，共享锁）和写锁（X 锁，排他锁）。
 
-```
-
+```sql
+mysql> select k from t where id=1 lock in share mode;
+mysql> select k from t where id=1 for update;
 ```
 
 
