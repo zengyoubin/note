@@ -196,7 +196,7 @@ create table T(
 
 ## 全局锁
 
-​	**全局锁是对整个数据库实例加锁，典型使用场景是，做全库逻辑备份。**命令是`Flush tables with read lock (FTWRL)`
+​	**全局锁是对整个数据库实例加锁，典型使用场景是，做全库逻辑备份**。语法是`Flush tables with read lock (FTWRL)`
 
 ​	官方自带的逻辑备份工具是 mysqldump。当 mysqldump 使用参数`–single-transaction` 的时候，导数据之前就会启动一个事务，来确保拿到一致性视图。而由于 MVCC 的支持，这个过程中数据是可以正常更新的。
 
@@ -204,3 +204,8 @@ create table T(
 
 ## 表级锁
 
+### 表锁
+
+​	表锁的语法是`lock tables xxx read/write `，lock tables 语法除了会限制别的线程的读写外，也限定了本线程接下来的操作对象。
+
+### 元数据锁（meta data lock，MDL)
