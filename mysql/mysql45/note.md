@@ -139,6 +139,17 @@
    1.  若 row trx_id 在数组中，表示这个版本是由还没提交的事务生成的，不可见；
    2.  若 row trx_id 不在数组中，表示这个版本是已经提交了的事务生成的，可见。
 
+针对以上进行具体示例分析：
+
+```sql
+CREATE TABLE `t` (
+  `id` int(11) NOT NULL,
+  `k` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+insert into t(id, k) values(1,1),(2,2);
+```
+
 ### 查看长事务
 
 ​	可以在 information_schema 库的 innodb_trx 这个表中查询长事务，比如下面这个语句，用于查找持续时间超过 60s 的事务。
