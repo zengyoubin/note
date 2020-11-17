@@ -155,9 +155,7 @@ select VARIABLE_VALUE into @b from global_status where VARIABLE_NAME = 'Innodb_b
 select @a/@b;
 ```
 
-
-
-
+- `innodb_flush_neighbors`值为 1 的时候会有上述的“连坐”机制，值为 0 时表示不找邻居，自己刷自己的。
 
 
 
