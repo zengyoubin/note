@@ -130,6 +130,7 @@
 #### InnoDB 刷脏页的控制策略
 
 - `innodb_io_capacity` 这个参数会告诉InnoDB磁盘能力，建议设置成磁盘的IOPS
+- `innodb_max_dirty_pages_pct`脏页比例上限，默认值是 75%。
 
 
 
