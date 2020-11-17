@@ -108,6 +108,20 @@
 
 ​	数据从磁盘读入内存涉及随机 IO 的访问，是数据库里面成本最高的操作之一。change buffer 因为减少了随机磁盘访问，所以对更新性能的提升是会很明显的。
 
+## InnoDB 存储
+
+​	**当内存数据页跟磁盘数据页内容不一致的时候，我们称这个内存页为“脏页”。内存数据写入到磁盘后，内存和磁盘上的数据页的内容就一致了，称为“干净页”。**
+
+### 刷脏页（flush）
+
+- redo log 写满了。这时候系统会停止所有更新操作，把 checkpoint 往前推进，redo log 留出空间可以继续写。
+
+
+
+
+
+
+
 # 事务
 
 ​	**ACID（Atomicity、Consistency、Isolation、Durability，即原子性、一致性、隔离性、持久性）**
@@ -212,8 +226,6 @@ insert into t(id, k) values(1,1),(2,2);
 mysql> select k from t where id=1 lock in share mode;
 mysql> select k from t where id=1 for update;
 ```
-
-
 
 
 
