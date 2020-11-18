@@ -162,6 +162,10 @@ select @a/@b;
 - `innodb_file_per_table`控制表数据是放在系统表空间还是存储在以`.ibd`为后缀的文件中。建议ON
 - delete 命令其实只是把记录的位置，或者数据页标记为了“可复用”，但磁盘文件的大小是不会变的,造成数据“空洞”（插入数据也会造成空洞）。
 
+#### 重建表
+
+​	使用`alter table XXX engine=InnoDB`命令来重建表,**MySQL5.6版本后是Online DDL**
+
 
 
 
