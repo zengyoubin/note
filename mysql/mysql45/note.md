@@ -98,6 +98,13 @@
 
 ![mysql update 更新流程如](image/2e5bff4910ec189fe1ee6e2ecc7b4bbe.png)
 
+#### redo log 和 binlog 是怎么关联起来的?
+
+​	它们有一个共同的数据字段，叫 XID。崩溃恢复的时候，会按顺序扫描 redo log：
+
+- 如果碰到既有 prepare、又有 commit 的 redo log，就直接提交；
+- 如果碰到只有 parepare、而没有 commit 的 redo log，就拿着 XID 去 binlog 找对应的事务。
+
 ## change buffer
 
 ​	当需要更新一个数据页时，如果数据页在内存中就直接更新，而如果这个数据页还没有在内存中的话，在不影响数据一致性的前提下，InnoDB 会将这些更新操作缓存在 change buffer 中，这样就不需要从磁盘中读入这个数据页了。在下次查询需要访问这个数据页的时候，将数据页读入内存，然后执行 change buffer 中与这个页有关的操作。通过这种方式就能保证这个数据逻辑的正确性。
