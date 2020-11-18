@@ -98,6 +98,10 @@
 
 ​	Extra 这个字段中的`Using filesort`表示的就是需要排序，MySQL 会给每个线程分配一块内存用于排序，称为` sort_buffer`。可能在内存中完成，也可能需要使用外部排序，这取决于排序所需的内存和参数 `sort_buffer_size`。
 
+#### rowid 排序
+
+​	`max_length_for_sort_data`，是 MySQL 中专门控制用于排序的行数据的长度的一个参数。
+
 
 
 # MySQL更新
