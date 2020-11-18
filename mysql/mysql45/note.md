@@ -92,9 +92,11 @@
 
 ### order by
 
+#### 全字段排序
+
 ![](image/826579b63225def812330ef6c344a303.png)
 
-​	Extra 这个字段中的`Using filesort`表示的就是需要排序，MySQL 会给每个线程分配一块内存用于排序，称为` sort_buffer`。
+​	Extra 这个字段中的`Using filesort`表示的就是需要排序，MySQL 会给每个线程分配一块内存用于排序，称为` sort_buffer`。可能在内存中完成，也可能需要使用外部排序，这取决于排序所需的内存和参数 `sort_buffer_size`。
 
 
 
