@@ -90,6 +90,14 @@
 
 ​	**count(字段)<count(主键 id)<count(1)≈count(*)**
 
+### order by
+
+![](image/826579b63225def812330ef6c344a303.png)
+
+​	Extra 这个字段中的`Using filesort`表示的就是需要排序，MySQL 会给每个线程分配一块内存用于排序，称为` sort_buffer`。
+
+
+
 # MySQL更新
 
 ## 两阶段提交
