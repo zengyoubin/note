@@ -166,6 +166,8 @@ select @a/@b;
 
 ​	使用`alter table XXX engine=InnoDB`命令来重建表,**MySQL5.6版本后是Online DDL**
 
+![Online DDL](image/2d1cfbbeb013b851a56390d38b5321f0.png)
+
 
 
 
