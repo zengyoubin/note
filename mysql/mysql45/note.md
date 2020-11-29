@@ -90,6 +90,8 @@
 
 #### JOIN 优化
 
+##### Multi-Range Read（MRR）
+
 # MySQL更新
 
 ## 两阶段提交
