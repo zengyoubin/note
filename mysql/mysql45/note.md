@@ -92,6 +92,10 @@
 
 ##### Multi-Range Read（MRR）
 
+​	批量回表，根据索引定位到的id放入`read_rnd_buffer`中，`read_rnd_buffer` 的大小是由 `read_rnd_buffer_size`
+
+##### Batched Key Access
+
 # MySQL更新
 
 ## 两阶段提交
