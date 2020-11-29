@@ -74,7 +74,15 @@
 	1. 使用 join 语句，性能比强行拆成多个单表执行 SQL 语句的性能要好；
  	2. 如果使用 join 语句的话，需要让小表做驱动表。
 
+### Simple Nested-Loop Join
+
 #### Block Nested-Loop Join（BNL）
+
+​	将其中一个表所有数据扫描进内存（`join_buffer`），然后再顺序扫描另外一个表，在内存中坐数据比对，满足条件的作为结果集的一部分。
+
+##### 参数
+
+- `join_buffer_size` `join_buffer`的大小，默认值256k。如果放不下表的所有数据的话，分段放。分块join
 
 
 
