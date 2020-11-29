@@ -77,11 +77,13 @@
 
 ![redo log 写盘](image/9d057f61d3962407f413deebc80526d4.png)
 
+InnoDB 有一个后台线程，每隔 1 秒，就会把 redo log buffer 中的日志，调用 write 写到文件系统的 `page cache`，然后调用 fsync 持久化到磁盘。
+
+
+
 #### 重要参数
 
-##### `innodb_flush_log_at_trx_commit`
-
-​	这个参数设置成1，表示每次事务的redo log都直接持久化到磁盘。
+- `innodb_flush_log_at_trx_commit` 为0时每次事务提交都只是把`redo log`留在`redo log buffer` 中；为1时每次事务提交都将`redo log` 直接持久化到磁盘;为3时表示每次事务提交都只是把`redo log`写到`page cache`;
 
 
 ## binlog和redo log区别
