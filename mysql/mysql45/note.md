@@ -38,87 +38,14 @@
 
 ​	接下来执行器会根据标的引擎定义，去使用这个引擎提供的接口。
 
-# 日志模块
-
-主要是Server层的`binlog`和Inno DB存储引擎层的`redo log 、undo log`
-
-## `binlog`
-
-​	binlog属于Server层，不具备`crash-safe`能力，只能用于归档。
-
-​	事务执行过程中，先把日志写到`binlog cache`,事务提交的时候，再把`binlog cache`写到binlog中
-
-![binlog 写盘](image/9ed86644d5f39efb0efec595abb92e3e.png)
-
-#### 参数
-
-- `sync_binlog`	为0时，每次提交事务只write，不fsync; 为1时，表示每次提交事务都会执行fsync;为N(N>1)时，每次提交事务都会write,但累计积累N个事务后才fsync。
-- `binlog_cache_size` 控制单个线程内 `binlog cache` 所占的内存大小，如果超过了这个参数规定的大小，就要暂存到磁盘。
-
-## `redo log`
-
-##### WAL（Wirte-Ahead Logging）
-
-​	先写日志，再写磁盘。具体来说，当有一条记录需要更新的时候，InnoDB 引擎就会先把记录写到 redo log里面，并更新内存，这个时候更新就算完成了。同时，InnoDB 引擎会在适当的时候，将这个操作记录更新到磁盘里面，而这个更新往往是在系统比较空闲的时候做。
-
-##### `redo log`
-
-​	InnoDB 的 redo log 是固定大小的，比如可以配置为一组 4 个文件，每个文件的大小是 1GB，那么总共就可以记录 4GB 的操作。从头开始写，写到末尾就又回到开头循环写。
-
-![redo log](image/16a7950217b3f0f4ed02db5db59562a7.png)
-
-- `write pos` 是当前记录的位置，一边写一遍后移
-- `check point` 是当前要擦除的位置，往后推移并且循环，擦除记录前要把记录更新到数据文件。
-- `write pos` 和`check point`之间空着的部分，可以用来记录新的操作。如果`write pos`追上`check point`，表示redo log满了，这时候不能再执行新的更新，得停下里先擦掉一些记录，把`check point`往前推进。
-
-  有了` redo log`，InnoDB 就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 `crash-safe`。
-
-​	事务执行过程中，先把日志写到`redo log buffer`,事务提交的时候，再把`redo log buffer`写到对应的`ib_logfile+数字`的文件中
-
-![redo log 写盘](image/9d057f61d3962407f413deebc80526d4.png)
-
-InnoDB 有一个后台线程，每隔 1 秒，就会把 redo log buffer 中的日志，调用 write 写到文件系统的 `page cache`，然后调用 fsync 持久化到磁盘。
-
-除了后台线程每秒的轮询操作外，还有两种场景会让一个没有提价ode事务的`redo log`写入磁盘中：
-
-1. 一种是，`redo log buffer` 占用的空间即将达到 `innodb_log_buffer_size` 一半的时候，后台线程会主动写盘。（注意，由于这个事务并没有提交，所以这个写盘动作只是 write，而没有调用 fsync，也就是只留在了文件系统的 `page cache`。）
-2. 另一种是，并行的事务提交的时候，顺带将这个事务的 `redo log buffer` 持久化到磁盘。（假设一个事务 A 执行到一半，已经写了一些 `redo log` 到 buffer 中，这时候有另外一个线程的事务 B 提交，如果 `innodb_flush_log_at_trx_commit` 设置的是 1，那么按照这个参数的逻辑，事务 B 要把 `redo log buffer` 里的日志全部持久化到磁盘。这时候，就会带上事务 A 在 `redo log buffer` 里的日志一起持久化到磁盘。）
-
-#### 参数
-
-- `innodb_flush_log_at_trx_commit` 为0时每次事务提交都只是把`redo log`留在`redo log buffer` 中；为1时每次事务提交都将`redo log` 直接持久化到磁盘;为3时表示每次事务提交都只是把`redo log`写到`page cache`;
-
-#### 组提交（`group commit`）
-
-​	日志逻辑序列号（`log sequence number`，LSN）。LSN 是单调递增的，用来对应 `redo log` 的一个个写入点。每次写入长度为 length 的 redo log， LSN 的值就会加上 length。
-
-​	LSN 也会写到 InnoDB 的数据页中，来确保数据页不会被多次执行重复的 redo log。关于 LSN 和 redo log、checkpoint 的关系，我会在后面的文章中详细展开。
-
-​	如图所示，是三个并发事务 (trx1, trx2, trx3) 在 prepare 阶段，都写完 `redo log buffer`，持久化到磁盘的过程，对应的 LSN 分别是 50、120 和 160。
-
-![redo log 组提交](image/933fdc052c6339de2aa3bf3f65b188cc.png)
-
-1. trx1 是第一个到达的，会被选为这组的 leader；
-2. 等 trx1 要开始写盘的时候，这个组里面已经有了三个事务，这时候 LSN 也变成了 160；
-3. trx1 去写盘的时候，带的就是 LSN=160，因此等 trx1 返回时，所有 LSN 小于等于 160 的 redo log，都已经被持久化到磁盘；
-4. 这时候 trx2 和 trx3 就可以直接返回了。
-
-##### binlog 和 redo log 组提交
-
-![两阶段提交细化](image/5ae7d074c34bc5bd55c82781de670c28.png)
-
-##### 参数
-
-- `binlog_group_commit_sync_delay` 参数，表示延迟多少微秒后才调用 fsync;
-- `binlog_group_commit_sync_no_delay_count` 参数，表示累积多少次以后才调用 fsync。
-
-## binlog和redo log区别
-
-1. redo log 是 InnoDB 引擎特有的；binlog 是 MySQL 的 Server 层实现的，所有引擎都可以使用。
-2. redo log 是物理日志，记录的是“在某个数据页上做了什么修改”；binlog 是逻辑日志，记录的是这个语句的原始逻辑，比如“给 ID=2 这一行的 c 字段加 1 ”。
-3. redo log 是循环写的，空间固定会用完；binlog 是可以追加写入的。“追加写”是指 binlog 文件写到一定大小后会切换到下一个，并不会覆盖以前的日志
-
 # MySQL查询
+
+### 边读边发
+
+1. 获取一行，写到 `net_buffer` 中。这块内存的大小是由参数 `net_buffer_length` 定义的，默认是 16k。
+2. 重复获取行，直到 net_buffer 写满，调用网络接口发出去。
+3. 如果发送成功，就清空 net_buffer，然后继续取下一行，并写入 net_buffer。
+4. 如果发送函数返回 EAGAIN 或 WSAEWOULDBLOCK，就表示本地网络栈（socket send buffer）写满了，进入等待。直到网络栈重新可写，再继续发送。
 
 ### count(*)
 
@@ -552,3 +479,84 @@ create table T(
 3. 优化 1：索引上的等值查询，给唯一索引加锁的时候，next-key lock 退化为行锁。
 4. 优化 2：索引上的等值查询，向右遍历时且最后一个值不满足等值条件的时候，next-key lock 退化为间隙锁。
 5. 一个 bug：唯一索引上的范围查询会访问到不满足条件的第一个值为止。
+
+# 日志模块
+
+主要是Server层的`binlog`和Inno DB存储引擎层的`redo log 、undo log`
+
+## `binlog`
+
+​	binlog属于Server层，不具备`crash-safe`能力，只能用于归档。
+
+​	事务执行过程中，先把日志写到`binlog cache`,事务提交的时候，再把`binlog cache`写到binlog中
+
+![binlog 写盘](image/9ed86644d5f39efb0efec595abb92e3e.png)
+
+#### 参数
+
+- `sync_binlog`	为0时，每次提交事务只write，不fsync; 为1时，表示每次提交事务都会执行fsync;为N(N>1)时，每次提交事务都会write,但累计积累N个事务后才fsync。
+- `binlog_cache_size` 控制单个线程内 `binlog cache` 所占的内存大小，如果超过了这个参数规定的大小，就要暂存到磁盘。
+
+## `redo log`
+
+##### WAL（Wirte-Ahead Logging）
+
+​	先写日志，再写磁盘。具体来说，当有一条记录需要更新的时候，InnoDB 引擎就会先把记录写到 redo log里面，并更新内存，这个时候更新就算完成了。同时，InnoDB 引擎会在适当的时候，将这个操作记录更新到磁盘里面，而这个更新往往是在系统比较空闲的时候做。
+
+##### `redo log`
+
+​	InnoDB 的 redo log 是固定大小的，比如可以配置为一组 4 个文件，每个文件的大小是 1GB，那么总共就可以记录 4GB 的操作。从头开始写，写到末尾就又回到开头循环写。
+
+![redo log](image/16a7950217b3f0f4ed02db5db59562a7.png)
+
+- `write pos` 是当前记录的位置，一边写一遍后移
+- `check point` 是当前要擦除的位置，往后推移并且循环，擦除记录前要把记录更新到数据文件。
+- `write pos` 和`check point`之间空着的部分，可以用来记录新的操作。如果`write pos`追上`check point`，表示redo log满了，这时候不能再执行新的更新，得停下里先擦掉一些记录，把`check point`往前推进。
+
+  有了` redo log`，InnoDB 就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 `crash-safe`。
+
+​	事务执行过程中，先把日志写到`redo log buffer`,事务提交的时候，再把`redo log buffer`写到对应的`ib_logfile+数字`的文件中
+
+![redo log 写盘](image/9d057f61d3962407f413deebc80526d4.png)
+
+InnoDB 有一个后台线程，每隔 1 秒，就会把 redo log buffer 中的日志，调用 write 写到文件系统的 `page cache`，然后调用 fsync 持久化到磁盘。
+
+除了后台线程每秒的轮询操作外，还有两种场景会让一个没有提价ode事务的`redo log`写入磁盘中：
+
+1. 一种是，`redo log buffer` 占用的空间即将达到 `innodb_log_buffer_size` 一半的时候，后台线程会主动写盘。（注意，由于这个事务并没有提交，所以这个写盘动作只是 write，而没有调用 fsync，也就是只留在了文件系统的 `page cache`。）
+2. 另一种是，并行的事务提交的时候，顺带将这个事务的 `redo log buffer` 持久化到磁盘。（假设一个事务 A 执行到一半，已经写了一些 `redo log` 到 buffer 中，这时候有另外一个线程的事务 B 提交，如果 `innodb_flush_log_at_trx_commit` 设置的是 1，那么按照这个参数的逻辑，事务 B 要把 `redo log buffer` 里的日志全部持久化到磁盘。这时候，就会带上事务 A 在 `redo log buffer` 里的日志一起持久化到磁盘。）
+
+#### 参数
+
+- `innodb_flush_log_at_trx_commit` 为0时每次事务提交都只是把`redo log`留在`redo log buffer` 中；为1时每次事务提交都将`redo log` 直接持久化到磁盘;为3时表示每次事务提交都只是把`redo log`写到`page cache`;
+
+#### 组提交（`group commit`）
+
+​	日志逻辑序列号（`log sequence number`，LSN）。LSN 是单调递增的，用来对应 `redo log` 的一个个写入点。每次写入长度为 length 的 redo log， LSN 的值就会加上 length。
+
+​	LSN 也会写到 InnoDB 的数据页中，来确保数据页不会被多次执行重复的 redo log。关于 LSN 和 redo log、checkpoint 的关系，我会在后面的文章中详细展开。
+
+​	如图所示，是三个并发事务 (trx1, trx2, trx3) 在 prepare 阶段，都写完 `redo log buffer`，持久化到磁盘的过程，对应的 LSN 分别是 50、120 和 160。
+
+![redo log 组提交](image/933fdc052c6339de2aa3bf3f65b188cc.png)
+
+1. trx1 是第一个到达的，会被选为这组的 leader；
+2. 等 trx1 要开始写盘的时候，这个组里面已经有了三个事务，这时候 LSN 也变成了 160；
+3. trx1 去写盘的时候，带的就是 LSN=160，因此等 trx1 返回时，所有 LSN 小于等于 160 的 redo log，都已经被持久化到磁盘；
+4. 这时候 trx2 和 trx3 就可以直接返回了。
+
+##### binlog 和 redo log 组提交
+
+![两阶段提交细化](image/5ae7d074c34bc5bd55c82781de670c28.png)
+
+##### 参数
+
+- `binlog_group_commit_sync_delay` 参数，表示延迟多少微秒后才调用 fsync;
+- `binlog_group_commit_sync_no_delay_count` 参数，表示累积多少次以后才调用 fsync。
+
+## binlog和redo log区别
+
+1. redo log 是 InnoDB 引擎特有的；binlog 是 MySQL 的 Server 层实现的，所有引擎都可以使用。
+2. redo log 是物理日志，记录的是“在某个数据页上做了什么修改”；binlog 是逻辑日志，记录的是这个语句的原始逻辑，比如“给 ID=2 这一行的 c 字段加 1 ”。
+3. redo log 是循环写的，空间固定会用完；binlog 是可以追加写入的。“追加写”是指 binlog 文件写到一定大小后会切换到下一个，并不会覆盖以前的日志
+
