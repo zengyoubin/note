@@ -50,7 +50,7 @@
 
 ![binlog 写盘](image/9ed86644d5f39efb0efec595abb92e3e.png)
 
-#### 重要参数
+#### 参数
 
 - `sync_binlog`	为0时，每次提交事务只write，不fsync; 为1时，表示每次提交事务都会执行fsync;为N(N>1)时，每次提交事务都会write,但累计积累N个事务后才fsync。
 - `binlog_cache_size` 控制单个线程内 `binlog cache` 所占的内存大小，如果超过了这个参数规定的大小，就要暂存到磁盘。
@@ -84,7 +84,7 @@ InnoDB 有一个后台线程，每隔 1 秒，就会把 redo log buffer 中的�
 1. 一种是，`redo log buffer` 占用的空间即将达到 `innodb_log_buffer_size` 一半的时候，后台线程会主动写盘。（注意，由于这个事务并没有提交，所以这个写盘动作只是 write，而没有调用 fsync，也就是只留在了文件系统的 `page cache`。）
 2. 另一种是，并行的事务提交的时候，顺带将这个事务的 `redo log buffer` 持久化到磁盘。（假设一个事务 A 执行到一半，已经写了一些 `redo log` 到 buffer 中，这时候有另外一个线程的事务 B 提交，如果 `innodb_flush_log_at_trx_commit` 设置的是 1，那么按照这个参数的逻辑，事务 B 要把 `redo log buffer` 里的日志全部持久化到磁盘。这时候，就会带上事务 A 在 `redo log buffer` 里的日志一起持久化到磁盘。）
 
-#### 重要参数
+#### 参数
 
 - `innodb_flush_log_at_trx_commit` 为0时每次事务提交都只是把`redo log`留在`redo log buffer` 中；为1时每次事务提交都将`redo log` 直接持久化到磁盘;为3时表示每次事务提交都只是把`redo log`写到`page cache`;
 
@@ -103,6 +103,11 @@ InnoDB 有一个后台线程，每隔 1 秒，就会把 redo log buffer 中的�
 3. trx1 去写盘的时候，带的就是 LSN=160，因此等 trx1 返回时，所有 LSN 小于等于 160 的 redo log，都已经被持久化到磁盘；
 4. 这时候 trx2 和 trx3 就可以直接返回了。
 
+##### binlog 和 redo log 组提交
+
+![两阶段提交细化](image/5ae7d074c34bc5bd55c82781de670c28.png)
+
+##### 参数
 
 ## binlog和redo log区别
 
