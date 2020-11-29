@@ -503,3 +503,6 @@ create table T(
 
 ​	锁的是两个值之间的空隙。跟间隙锁存在冲突的关系的，是“往这个间隙中插入一个记录”这个操作，间隙锁之间不存在冲突关系。
 
+## Next-key lock
+
+​	Next-key lock = gap lock （间隙锁） + record lock （行锁）
