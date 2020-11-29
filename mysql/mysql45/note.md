@@ -72,11 +72,12 @@
 
 ​	事务执行过程中，先把日志写到`binlog cache`,事务提交的时候，再把`binlog cache`写到binlog中
 
+![binlog 写盘](image/9ed86644d5f39efb0efec595abb92e3e.png)
+
 #### 重要参数
 
-`sync_binlog`
-
-​	这个参数设置成1，表示每次事务的binlog都持久化到磁盘。
+- `sync_binlog`	为0时，每次提交事务只write，不fsync; 为1时，表示每次提交事务都会执行fsync;为N(N>1)时，每次提交事务都会write,但累计积累N个事务后才fsync。
+- `binlog_cache_size` 控制单个线程内 `binlog cache` 所占的内存大小，如果超过了这个参数规定的大小，就要暂存到磁盘。
 
 ## binlog和redo log区别
 
