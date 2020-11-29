@@ -90,6 +90,10 @@ InnoDB 有一个后台线程，每隔 1 秒，就会把 redo log buffer 中的�
 
 #### 组提交（`group commit`）
 
+​	日志逻辑序列号（`log sequence number`，LSN）。LSN 是单调递增的，用来对应 `redo log` 的一个个写入点。每次写入长度为 length 的 redo log， LSN 的值就会加上 length。
+
+​	LSN 也会写到 InnoDB 的数据页中，来确保数据页不会被多次执行重复的 redo log。关于 LSN 和 redo log、checkpoint 的关系，我会在后面的文章中详细展开。如图 3 所示，是三个并发事务 (trx1, trx2, trx3) 在 prepare 阶段，都写完 redo log buffer，持久化到磁盘的过程，对应的 LSN 分别是 50、120 和 160。
+
 
 
 
