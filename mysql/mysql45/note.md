@@ -81,12 +81,16 @@ InnoDB 有一个后台线程，每隔 1 秒，就会把 redo log buffer 中的�
 
 除了后台线程每秒的轮询操作外，还有两种场景会让一个没有提价ode事务的`redo log`写入磁盘中：
 
-1. 一种是，`redo log buffer` 占用的空间即将达到 `innodb_log_buffer_size` 一半的时候，后台线程会主动写盘。（注意，由于这个事务并没有提交，所以这个写盘动作只是 write，而没有调用 fsync，也就是只留在了文件系统的 page cache。）
-2. 另一种是，并行的事务提交的时候，顺带将这个事务的 `redo log buffer` 持久化到磁盘。（假设一个事务 A 执行到一半，已经写了一些 redo log 到 buffer 中，这时候有另外一个线程的事务 B 提交，如果 innodb_flush_log_at_trx_commit 设置的是 1，那么按照这个参数的逻辑，事务 B 要把 `redo log buffer` 里的日志全部持久化到磁盘。这时候，就会带上事务 A 在 `redo log buffer` 里的日志一起持久化到磁盘。）
+1. 一种是，`redo log buffer` 占用的空间即将达到 `innodb_log_buffer_size` 一半的时候，后台线程会主动写盘。（注意，由于这个事务并没有提交，所以这个写盘动作只是 write，而没有调用 fsync，也就是只留在了文件系统的 `page cache`。）
+2. 另一种是，并行的事务提交的时候，顺带将这个事务的 `redo log buffer` 持久化到磁盘。（假设一个事务 A 执行到一半，已经写了一些 `redo log` 到 buffer 中，这时候有另外一个线程的事务 B 提交，如果 `innodb_flush_log_at_trx_commit` 设置的是 1，那么按照这个参数的逻辑，事务 B 要把 `redo log buffer` 里的日志全部持久化到磁盘。这时候，就会带上事务 A 在 `redo log buffer` 里的日志一起持久化到磁盘。）
 
 #### 重要参数
 
 - `innodb_flush_log_at_trx_commit` 为0时每次事务提交都只是把`redo log`留在`redo log buffer` 中；为1时每次事务提交都将`redo log` 直接持久化到磁盘;为3时表示每次事务提交都只是把`redo log`写到`page cache`;
+
+#### 组提交（`group commit`）
+
+
 
 
 ## binlog和redo log区别
