@@ -92,9 +92,16 @@ InnoDB 有一个后台线程，每隔 1 秒，就会把 redo log buffer 中的�
 
 ​	日志逻辑序列号（`log sequence number`，LSN）。LSN 是单调递增的，用来对应 `redo log` 的一个个写入点。每次写入长度为 length 的 redo log， LSN 的值就会加上 length。
 
-​	LSN 也会写到 InnoDB 的数据页中，来确保数据页不会被多次执行重复的 redo log。关于 LSN 和 redo log、checkpoint 的关系，我会在后面的文章中详细展开。如图 3 所示，是三个并发事务 (trx1, trx2, trx3) 在 prepare 阶段，都写完 redo log buffer，持久化到磁盘的过程，对应的 LSN 分别是 50、120 和 160。
+​	LSN 也会写到 InnoDB 的数据页中，来确保数据页不会被多次执行重复的 redo log。关于 LSN 和 redo log、checkpoint 的关系，我会在后面的文章中详细展开。
 
+​	如图所示，是三个并发事务 (trx1, trx2, trx3) 在 prepare 阶段，都写完 `redo log buffer`，持久化到磁盘的过程，对应的 LSN 分别是 50、120 和 160。
 
+![redo log 组提交](image/933fdc052c6339de2aa3bf3f65b188cc.png)
+
+1. trx1 是第一个到达的，会被选为这组的 leader；
+2. 等 trx1 要开始写盘的时候，这个组里面已经有了三个事务，这时候 LSN 也变成了 160；
+3. trx1 去写盘的时候，带的就是 LSN=160，因此等 trx1 返回时，所有 LSN 小于等于 160 的 redo log，都已经被持久化到磁盘；
+4. 这时候 trx2 和 trx3 就可以直接返回了。
 
 
 ## binlog和redo log区别
