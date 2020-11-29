@@ -74,7 +74,7 @@
 	1. 使用 join 语句，性能比强行拆成多个单表执行 SQL 语句的性能要好；
  	2. 如果使用 join 语句的话，需要让小表做驱动表。
 
-#### Simple Nested-Loop Join（）
+#### Block Nested-Loop Join（BNL）
 
 
 
