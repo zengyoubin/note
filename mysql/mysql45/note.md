@@ -65,6 +65,12 @@
 
 ​	`max_length_for_sort_data`，是 MySQL 中专门控制用于排序的行数据的长度的一个参数。
 
+### JOIN 查询
+
+#### Index Nested-Loop Join（NLJ）
+
+​	
+
 
 
 # MySQL更新
