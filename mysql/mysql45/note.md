@@ -42,7 +42,7 @@
 
 主要是Server层的`binlog`和Inno DB存储引擎层的`redo log 、undo log`
 
-## redo log
+## `redo log`
 
 ##### WAL（Wirte-Ahead Logging）
 
@@ -66,9 +66,11 @@
 
 ​	这个参数设置成1，表示每次事务的redo log都直接持久化到磁盘。
 
-## binlog
+## `binlog`
 
 ​	binlog属于Server层，不具备`crash-safe`能力，只能用于归档。
+
+​	事务执行过程中，先把日志写到`binlog cache`,事务提交的时候，再把`binlog cache`写到binlog中
 
 #### 重要参数
 
