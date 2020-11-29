@@ -73,7 +73,9 @@
 
   有了` redo log`，InnoDB 就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 `crash-safe`。
 
-​	事务执行过程中，先把日志写到`redo log buffer`,事务提交的时候，再把`redo log buffer`写到对应的`id`中
+​	事务执行过程中，先把日志写到`redo log buffer`,事务提交的时候，再把`redo log buffer`写到对应的`ib_logfile+数字`的文件中
+
+![redo log 写盘](image/9d057f61d3962407f413deebc80526d4.png)
 
 #### 重要参数
 
