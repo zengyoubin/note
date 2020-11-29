@@ -109,6 +109,9 @@ InnoDB 有一个后台线程，每隔 1 秒，就会把 redo log buffer 中的�
 
 ##### 参数
 
+- `binlog_group_commit_sync_delay` 参数，表示延迟多少微秒后才调用 fsync;
+- `binlog_group_commit_sync_no_delay_count` 参数，表示累积多少次以后才调用 fsync。
+
 ## binlog和redo log区别
 
 1. redo log 是 InnoDB 引擎特有的；binlog 是 MySQL 的 Server 层实现的，所有引擎都可以使用。
