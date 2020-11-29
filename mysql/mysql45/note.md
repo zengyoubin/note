@@ -55,8 +55,6 @@
 - `sync_binlog`	为0时，每次提交事务只write，不fsync; 为1时，表示每次提交事务都会执行fsync;为N(N>1)时，每次提交事务都会write,但累计积累N个事务后才fsync。
 - `binlog_cache_size` 控制单个线程内 `binlog cache` 所占的内存大小，如果超过了这个参数规定的大小，就要暂存到磁盘。
 
-
-
 ## `redo log`
 
 ##### WAL（Wirte-Ahead Logging）
@@ -73,7 +71,9 @@
 - `check point` 是当前要擦除的位置，往后推移并且循环，擦除记录前要把记录更新到数据文件。
 - `write pos` 和`check point`之间空着的部分，可以用来记录新的操作。如果`write pos`追上`check point`，表示redo log满了，这时候不能再执行新的更新，得停下里先擦掉一些记录，把`check point`往前推进。
 
-有了 redo log，InnoDB 就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 `crash-safe`。
+  有了` redo log`，InnoDB 就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 `crash-safe`。
+
+​	事务执行过程中，先把日志写到`redo log buffer`,事务提交的时候，再把`redo log buffer`写到对应的`id`中
 
 #### 重要参数
 
