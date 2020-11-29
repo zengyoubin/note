@@ -94,7 +94,11 @@
 
 ​	批量回表，根据索引定位到的id放入`read_rnd_buffer`中，`read_rnd_buffer` 的大小是由 `read_rnd_buffer_size`
 
-##### Batched Key Access
+##### Batched Key Access（BKA）
+
+​	类似于MRR，BKA算法其实是对NLJ算法的优化。
+
+##### 使用临时表
 
 # MySQL更新
 
