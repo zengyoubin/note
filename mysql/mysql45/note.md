@@ -42,13 +42,28 @@
 
 主要是Server层的`binlog`和Inno DB存储引擎层的`redo log 、undo log`
 
+## `binlog`
+
+​	binlog属于Server层，不具备`crash-safe`能力，只能用于归档。
+
+​	事务执行过程中，先把日志写到`binlog cache`,事务提交的时候，再把`binlog cache`写到binlog中
+
+![binlog 写盘](image/9ed86644d5f39efb0efec595abb92e3e.png)
+
+#### 重要参数
+
+- `sync_binlog`	为0时，每次提交事务只write，不fsync; 为1时，表示每次提交事务都会执行fsync;为N(N>1)时，每次提交事务都会write,但累计积累N个事务后才fsync。
+- `binlog_cache_size` 控制单个线程内 `binlog cache` 所占的内存大小，如果超过了这个参数规定的大小，就要暂存到磁盘。
+
+
+
 ## `redo log`
 
 ##### WAL（Wirte-Ahead Logging）
 
 ​	先写日志，再写磁盘。具体来说，当有一条记录需要更新的时候，InnoDB 引擎就会先把记录写到 redo log里面，并更新内存，这个时候更新就算完成了。同时，InnoDB 引擎会在适当的时候，将这个操作记录更新到磁盘里面，而这个更新往往是在系统比较空闲的时候做。
 
-##### redo log
+##### `redo log`
 
 ​	InnoDB 的 redo log 是固定大小的，比如可以配置为一组 4 个文件，每个文件的大小是 1GB，那么总共就可以记录 4GB 的操作。从头开始写，写到末尾就又回到开头循环写。
 
@@ -66,18 +81,6 @@
 
 ​	这个参数设置成1，表示每次事务的redo log都直接持久化到磁盘。
 
-## `binlog`
-
-​	binlog属于Server层，不具备`crash-safe`能力，只能用于归档。
-
-​	事务执行过程中，先把日志写到`binlog cache`,事务提交的时候，再把`binlog cache`写到binlog中
-
-![binlog 写盘](image/9ed86644d5f39efb0efec595abb92e3e.png)
-
-#### 重要参数
-
-- `sync_binlog`	为0时，每次提交事务只write，不fsync; 为1时，表示每次提交事务都会执行fsync;为N(N>1)时，每次提交事务都会write,但累计积累N个事务后才fsync。
-- `binlog_cache_size` 控制单个线程内 `binlog cache` 所占的内存大小，如果超过了这个参数规定的大小，就要暂存到磁盘。
 
 ## binlog和redo log区别
 
