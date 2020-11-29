@@ -42,7 +42,7 @@
 
 主要是Server层的`binlog`和Inno DB存储引擎层的`redo log 、undo log`
 
-### 重要的日志模块：redo log
+## redo log
 
 ##### WAL（Wirte-Ahead Logging）
 
@@ -66,7 +66,7 @@
 
 ​	这个参数设置成1，表示每次事务的redo log都直接持久化到磁盘。
 
-### 重要的日志模块：binlog
+## binlog
 
 ​	binlog属于Server层，不具备`crash-safe`能力，只能用于归档。
 
@@ -76,7 +76,7 @@
 
 ​	这个参数设置成1，表示每次事务的binlog都持久化到磁盘。
 
-### binlog和redo log区别
+## binlog和redo log区别
 
 1. redo log 是 InnoDB 引擎特有的；binlog 是 MySQL 的 Server 层实现的，所有引擎都可以使用。
 2. redo log 是物理日志，记录的是“在某个数据页上做了什么修改”；binlog 是逻辑日志，记录的是这个语句的原始逻辑，比如“给 ID=2 这一行的 c 字段加 1 ”。
