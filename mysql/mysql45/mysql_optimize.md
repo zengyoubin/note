@@ -1,4 +1,4 @@
-## 基于成本的优化
+# 基于成本的优化
 
 ### MySQL 成本
 
@@ -152,7 +152,7 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
 
 ​	通过表空间的Segment Header内的一些字段来统计。
 
-### innodb_index_stats
+#### innodb_index_stats
 
 | 字段名           | 描述         |
 | ---------------- | ------------ |
@@ -168,3 +168,13 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
 - n_leaf_pages : 表示该索引的叶子节点实际占用多少页面
 - size ：表示该索引共占用多少页面
 - n_diff_pfxNN ：表示对应索引列不重复的值有多少。
+
+#### 定期更新统计数据
+
+- 开启`innodb_stats_auto_recalc`同上可分别设置全局和指定表
+- 手动运行`analyze table table_name`
+
+#### 手动更新innodb_index_stats和innodb_table_stats
+
+更新后运行`flush table table_name`
+
