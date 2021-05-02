@@ -55,3 +55,6 @@ create table table_name (...) engine='Innodb',stats_sample_pages=20;
 alter table table_name engine='Innodb',stats_sample_pages=20;
 ```
 
+##### clustered_index_size和sum_of_other_index_sizes
+
+​	通过表空间的Segment Header内的一些字段来统计
