@@ -196,7 +196,14 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
 
 #### 表达式计算
 
+#### having 语句 和 where 语句的合并
 
+​	查询语句中没有出现SUM、MAX类似的聚集函数以及GROUP BY 语句，将会执行语句合并。
+
+#### 常量表检查
+
+	- 查询的表中只有0或1条语句
+	- 使用主键等值匹配或者唯一二级索引列等值匹配作为搜索条件来查询某个表。
 
 
 
