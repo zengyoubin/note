@@ -62,7 +62,7 @@
 - 对于n表连接，有n!中连接顺序。
 - 提前结束某种连接顺序的成本评估。
 - 系统变量`optimizer_search_depth`
-- 是否启用
+- 系统变量`optimizer_prune_level`
 
 ## InnoDB 统计数据
 
