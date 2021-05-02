@@ -57,4 +57,18 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
 
 ##### clustered_index_size和sum_of_other_index_sizes
 
-​	通过表空间的Segment Header内的一些字段来统计
+​	通过表空间的Segment Header内的一些字段来统计。
+
+### innodb_index_stats
+
+| 字段名           | 描述         |
+| ---------------- | ------------ |
+| database_name    |              |
+| table_name       |              |
+| index_name       |              |
+| last_update      |              |
+| stat_name        | 统计项名称   |
+| stat_value       | 统计值       |
+| sample_size      | 采样页面数量 |
+| stat_description |              |
+
