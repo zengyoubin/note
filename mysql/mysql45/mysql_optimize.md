@@ -64,6 +64,21 @@
 - 系统变量`optimizer_search_depth`
 - 系统变量`optimizer_prune_level`
 
+### 成本常数
+
+#### mysql.server_cost
+
+| 成本常数名称                 | 默认值 | 描述 |
+| ---------------------------- | ------ | ---- |
+| disk_temptable_create_cost   |        |      |
+| disk_temptable_row_cost      |        |      |
+| key_compare_cost             |        |      |
+| memory_temptable_create_cost |        |      |
+| memory_temptable_row_cost    |        |      |
+| row_evalu_cost               |        |      |
+
+
+
 ## InnoDB 统计数据
 
 ### 统计数据的存储方式
