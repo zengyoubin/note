@@ -44,5 +44,14 @@ alter table table_name engine='Innodb',stats_persistent=(0|1);
 
 - 全局
 
-`innodb_stats_persistent_sample_pages`
+```sql
+show variables like 'innodb_stats_persistent_sample_pages';	
+```
+
+- 指定表
+
+```sql
+create table table_name (...) engine='Innodb',stats_sample_pages=20;
+alter table table_name engine='Innodb',stats_sample_pages=20;
+```
 
