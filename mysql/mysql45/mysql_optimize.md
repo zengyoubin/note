@@ -77,11 +77,6 @@
 | memory_temptable_row_cost    | 0.2    | 向基于内存的临时表写入或读取一条记录的成本 |
 | row_evaluate_cost            | 0.2    | 读取并检测一条记录是否符合搜索条件的成本   |
 
-##### 刷新更新的成本常数
-
-```sql
-flush optimizer_costs;
-```
 
 #### mysql.engine_cost
 
@@ -90,7 +85,11 @@ flush optimizer_costs;
 | io_block_read_cost     | 1.0    | 从磁盘上读取一个对应块的成本。 |
 | memory_block_read_cost | 1.0    | 从内存读取一个对应块的成本。   |
 
+#### 刷新更新的成本常数
 
+```sql
+flush optimizer_costs;
+```
 
 ## InnoDB 统计数据
 
