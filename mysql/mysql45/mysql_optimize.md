@@ -165,3 +165,6 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
 | sample_size      | 采样页面数量 |
 | stat_description |              |
 
+- n_leaf_pages : 表示该索引的叶子节点实际占用多少页面
+- size ：表示该索引共占用多少页面
+- n_diff_pfxNN ：表示对应索引列不重复的值有多少。
