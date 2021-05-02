@@ -36,3 +36,13 @@ alter table table_name engine='Innodb',stats_persistent=(0|1);
 | clustered_index_size     | 表的聚簇索引占用的页面数量 |
 | sum_of_other_index_sizes | 表的其他索引占用的页面数量 |
 
+##### n_rows
+
+​	按照一定算法从聚簇索引中选取几个叶子节点页面，统计每个页面包含的记录数量，然后计算一个页面中平均包含的记录数量，并将其乘以全部叶子节点的数量。
+
+###### 统计页面数量
+
+- 全局
+
+`innodb_stats_persistent_sample_pages`
+
