@@ -68,14 +68,27 @@
 
 #### mysql.server_cost
 
-| 成本常数名称                 | 默认值 | 描述 |
-| ---------------------------- | ------ | ---- |
-| disk_temptable_create_cost   |        |      |
-| disk_temptable_row_cost      |        |      |
-| key_compare_cost             |        |      |
-| memory_temptable_create_cost |        |      |
-| memory_temptable_row_cost    |        |      |
-| row_evalu_cost               |        |      |
+| 成本常数名称                 | 默认值 | 描述                                       |
+| ---------------------------- | ------ | ------------------------------------------ |
+| disk_temptable_create_cost   | 40.0   | 创建基于磁盘的临时表成本                   |
+| disk_temptable_row_cost      | 1.0    | 向基于磁盘的临时表写入或读取一条记录的成本 |
+| key_compare_cost             | 0.1    | 两条记录进行比较的成本                     |
+| memory_temptable_create_cost | 2.0    | 创建基于内存的临时表成本                   |
+| memory_temptable_row_cost    | 0.2    | 向基于内存的临时表写入或读取一条记录的成本 |
+| row_evaluate_cost            | 0.2    | 读取并检测一条记录是否符合搜索条件的成本   |
+
+##### 刷新更新的成本常数
+
+```sql
+flush optimizer_costs;
+```
+
+#### mysql.engine_cost
+
+| 成本常数名称           | 默认值 | 描述                           |
+| ---------------------- | ------ | ------------------------------ |
+| io_block_read_cost     | 1.0    | 从磁盘上读取一个对应块的成本。 |
+| memory_block_read_cost | 1.0    | 从内存读取一个对应块的成本。   |
 
 
 
