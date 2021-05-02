@@ -1,4 +1,4 @@
-# 基于成本的优化
+## 基于成本的优化
 
 ### MySQL 成本
 
@@ -177,4 +177,28 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
 #### 手动更新innodb_index_stats和innodb_table_stats
 
 更新后运行`flush table table_name`
+
+### innodb_stats_method
+
+- nulls_equal : 所有null 值都是相等的
+- nulls_unequal : 所有null都是不相等的
+- nulls_ignore : 忽略null值
+
+## 查询重写
+
+### 条件化简
+
+#### 移除不必要的括号
+
+#### 常量传递
+
+#### 移除没用的条件
+
+#### 表达式计算
+
+
+
+
+
+
 
