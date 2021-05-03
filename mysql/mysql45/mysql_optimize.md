@@ -333,6 +333,24 @@ insert into s2 select * from s1;
 
 #### SIMPLE
 
+​	查询语句中不包含UNION或者子查询的查询
+
+#### PRIMARY
+
+​	对于包含UNION、UNION ALL或者子查询的大查询的组成部分
+
+#### UNION
+
+​	对于包含UNION、UNION ALL或者子查询的大查询的组成部分
+
+#### UNION RESULT
+
+​	使用临时表来完成UNION的去重操作
+
+#### SUBQUERY
+
+​	包含子查询不能转化为对应的半连接
+
 
 
 
