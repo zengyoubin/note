@@ -276,41 +276,51 @@ insert into s2 select * from s1;
 
 #### IN 子查询优化
 
-1. 子查询转半连接
+##### 子查询转半连接
 
-   - Table pullout（子查询中的表上拉）
+- Table pullout（子查询中的表上拉）
 
-     当子查询的查询列表处只有主键或者唯一索引列时，可以直接把子查询中的表上拉到外层查询的from语句中，并把子查询中的搜索条件合并到外层查询的搜索条件中。
+  当子查询的查询列表处只有主键或者唯一索引列时，可以直接把子查询中的表上拉到外层查询的from语句中，并把子查询中的搜索条件合并到外层查询的搜索条件中。
 
-     ```sql
-     select * from s1 where key2 in (select key2 from s2 where key3 = 'a')
-     ```
+  ```sql
+  select * from s1 where key2 in (select key2 from s2 where key3 = 'a')
+  ```
 
-     ```sql
-     select s1.* from s1 inner join s3 on s1.key2=s2.key2 where s2.key3='a';
-     ```
+  ```sql
+  select s1.* from s1 inner join s3 on s1.key2=s2.key2 where s2.key3='a';
+  ```
 
-   - Duplicate Weedout （重复值消除）
+- Duplicate Weedout （重复值消除）
 
-     建立临时表消除半连接产生的重复结果。
+  建立临时表消除半连接产生的重复结果。
 
-     ```sql
-     select * from s1 where key1 in (select comment_field from s2 where key3 ='a')	
-     ```
+  ```sql
+  select * from s1 where key1 in (select comment_field from s2 where key3 ='a')	
+  ```
 
-   - LooseScan（松散扫描）
+- LooseScan（松散扫描）
 
-     ```sql
-     select * from s1 where key3 in (select key1 from s2 where key1>'a' and key1<'b')
-     ```
+  ```sql
+  select * from s1 where key3 in (select key1 from s2 where key1>'a' and key1<'b')
+  ```
 
-     对于s2表的访问可以使用到key1列，结果正好也是key1列。可将s2作为驱动表，并且key1有多个重复时只取第一个
+  对于s2表的访问可以使用到key1列，结果正好也是key1列。可将s2作为驱动表，并且key1有多个重复时只取第一个
 
-   - Semi-join Materialization （半连接物化）
+- Semi-join Materialization （半连接物化）
 
-     
+  将子查询直接物化，再进行连接查询
 
-   - FirstMatch（首次匹配）
+- FirstMatch（首次匹配）
+
+  ```sql
+  select * from s1 where key1 in (select comment_field from s2 where s1.key3=s2.kxey3)
+  ```
+
+  ```sql
+  类似于 -> select s1.* from s1 semi join s2 on s1.key1=s2.comment_field and s1.key3=s2.key3
+  ```
+
+  #### 半连接使用
 
 
 
