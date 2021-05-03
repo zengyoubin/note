@@ -254,14 +254,29 @@ insert into s2 select * from s1;
       select * from s1 where key1 in (select key3 from s2)
       ```
 
-      
-
    4. 表子查询
+
+      ```sql
+      select * from s1 where (key1,key2) in (select key1,key2 from s2)
+      ```
 
 2. 按与外层查询的关系来区分子查询
 
    1. 不相关子查询
+
+      ```sql
+      select * from s1 where key1 in (select key3 from s2)
+      ```
+
    2. 相关子查询
+
+      ```sql
+      select * from s1 where key1 in (select key3 from s2 where )
+      ```
+
+      
+
+      
 
 #### IN 子查询优化
 
