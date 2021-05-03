@@ -271,12 +271,8 @@ insert into s2 select * from s1;
    2. 相关子查询
 
       ```sql
-      select * from s1 where key1 in (select key3 from s2 where )
+      select * from s1 where key2 in (select key2 from s2 where s1.key1=s2.key3)
       ```
-
-      
-
-      
 
 #### IN 子查询优化
 
