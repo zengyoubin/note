@@ -237,6 +237,8 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
 
    - LooseScan（松散扫描）
 
+     
+
    - Semi-join Materialization （半连接物化）
 
    - FirstMatch（首次匹配）
