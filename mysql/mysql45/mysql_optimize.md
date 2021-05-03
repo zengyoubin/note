@@ -227,8 +227,7 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
 
 1. 物化表 -> 物化表转连接
 2. 子查询转半连接
-
-   
+   - Table pullout 
 
 
 
