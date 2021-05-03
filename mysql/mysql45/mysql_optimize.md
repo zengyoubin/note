@@ -322,7 +322,16 @@ insert into s2 select * from s1;
 
 ## EXPLAIN 
 
+### table
 
+### id
+
+- id 越大优先级越高
+- id 相同 顺序是从上到下，如果是关联查询，上者是驱动表下者是被驱动表
+
+### select_type
+
+#### SIMPLE
 
 
 
