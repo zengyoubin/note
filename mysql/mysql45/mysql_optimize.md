@@ -186,6 +186,27 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
 
 ## 查询重写
 
+```sql
+create table s1(
+    id           int not null auto_increment,
+    key1         varchar(100),
+    key2         int,
+    key3         varchar(100),
+    key_part1    varchar(100),
+    key_part2    varchar(100),
+    key_part3    varchar(100),
+    common_field varchar(100),
+    primary key (id),
+    key idx_key1 (key1),
+    unique key uk_key2 (key2),
+    key idx_key3 (key3),
+    key idx_key_part (key_part1, key_part2, key_part3)
+) engine = 'innodb' charset 'utf8mb4';
+
+```
+
+
+
 ### 条件化简
 
 #### 移除不必要的括号
@@ -236,6 +257,12 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
      建立临时表消除半连接产生的重复结果。
 
    - LooseScan（松散扫描）
+
+     ```sql
+     select * from s1 where key3 in (select key1 from s2 where key1>'a' and key1<'b')
+     ```
+
+     
 
      
 
