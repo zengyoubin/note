@@ -365,13 +365,19 @@ explain select * from s1 union select * from s2
 
 #### SUBQUERY
 
-​	包含子查询不能转化为对应的半连接
+​	包含子查询不能转化为对应的半连接，并且该查询是不相关子查询，而且查询优化器决定采用将该子查询物化的方式来执行该子查询。
 
 ```sql
 explain select * from s1 where key1 in (select key1 from s2) or key3='a';
 ```
 
+#### DEPENDENT SUBQUERY
 
+​	包含子查询不能转化为对应的半连接，并且该子查询被查询优化器转化为相关子查询的形式。
+
+```sql
+explain select * from s1 where key1 in (select key1 from s2 where s1.key1=s2.key2) or key3='a';
+```
 
 
 
