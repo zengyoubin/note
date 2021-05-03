@@ -228,7 +228,9 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
 1. 子查询转半连接
    - Table pullout（子查询中的表上拉）
    - Duplicate Weedout （重复值消除）
-   - 
+   - LooseScan（松散扫描）
+   - Semi-join Materialization （半连接物化）
+   - FirstMatch（首次匹配）
 
 
 
