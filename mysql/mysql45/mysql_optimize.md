@@ -282,15 +282,22 @@ insert into s2 select * from s1;
 
      当子查询的查询列表处只有主键或者唯一索引列时，可以直接把子查询中的表上拉到外层查询的from语句中，并把子查询中的搜索条件合并到外层查询的搜索条件中。
 
-     ```
+     ```sql
      select * from s1 where key2 in (select key2 from s2 where key3 = 'a')
      ```
 
-     
+     ```sql
+     select s1.* from s1 inner join s3 on s1.key2=s2.key2 where s2.key3='a';
+     ```
 
    - Duplicate Weedout （重复值消除）
 
      建立临时表消除半连接产生的重复结果。
+
+     ```
+     ```
+
+     
 
    - LooseScan（松散扫描）
 
