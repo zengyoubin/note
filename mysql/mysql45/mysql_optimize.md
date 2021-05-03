@@ -226,10 +226,19 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
 #### IN 子查询优化
 
 1. 子查询转半连接
+
    - Table pullout（子查询中的表上拉）
+
+     当子查询的查询列表处只有主键或者唯一索引列时，可以直接把子查询中的表上拉到外层查询的from语句中，并把子查询中的搜索条件合并到外层查询的搜索条件中。
+
    - Duplicate Weedout （重复值消除）
+
+     建立临时表消除半连接产生的重复结果。
+
    - LooseScan（松散扫描）
+
    - Semi-join Materialization （半连接物化）
+
    - FirstMatch（首次匹配）
 
 
