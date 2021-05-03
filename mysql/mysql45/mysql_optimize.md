@@ -203,6 +203,8 @@ create table s1(
     key idx_key_part (key_part1, key_part2, key_part3)
 ) engine = 'innodb' charset 'utf8mb4';
 
+create table s2 like s1;
+insert into s2 select * from s1;
 ```
 
 
