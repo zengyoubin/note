@@ -223,6 +223,11 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
    1. 不相关子查询
    2. 相关子查询
 
+#### IN 子查询优化
+
+1. 物化表 -> 物化表转连接
+2. 子查询转半连接
+
    
 
 
