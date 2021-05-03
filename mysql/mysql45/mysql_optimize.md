@@ -320,7 +320,7 @@ insert into s2 select * from s1;
   类似于 -> select s1.* from s1 semi join s2 on s1.key1=s2.comment_field and s1.key3=s2.key3
   ```
 
-  #### 半连接使用
+- 
 
 
 
