@@ -335,21 +335,41 @@ insert into s2 select * from s1;
 
 ​	查询语句中不包含UNION或者子查询的查询
 
+```sql
+explain select * from s1 inner join s2;
+```
+
 #### PRIMARY
 
 ​	对于包含UNION、UNION ALL或者子查询的大查询的组成部分
+
+```sql
+explain select * from s1 union select * from s2
+```
 
 #### UNION
 
 ​	对于包含UNION、UNION ALL或者子查询的大查询的组成部分
 
+```sql
+explain select * from s1 union select * from s2
+```
+
 #### UNION RESULT
 
 ​	使用临时表来完成UNION的去重操作
 
+```sql
+explain select * from s1 union select * from s2
+```
+
 #### SUBQUERY
 
 ​	包含子查询不能转化为对应的半连接
+
+```sql
+explain select * from s1 where key1 in (select key1 from s2) or key3='a';
+```
 
 
 
