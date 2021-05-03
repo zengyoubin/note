@@ -225,9 +225,10 @@ alter table table_name engine='Innodb',stats_sample_pages=20;
 
 #### IN 子查询优化
 
-1. 物化表 -> 物化表转连接
-2. 子查询转半连接
-   - Table pullout 
+1. 子查询转半连接
+   - Table pullout（子查询中的表上拉）
+   - Duplicate Weedout （重复值消除）
+   - 
 
 
 
