@@ -294,10 +294,9 @@ insert into s2 select * from s1;
 
      建立临时表消除半连接产生的重复结果。
 
+     ```sql
+     select * from s1 where key1 in (select comment_field from s2 where key3 ='a')	
      ```
-     ```
-
-     
 
    - LooseScan（松散扫描）
 
@@ -305,11 +304,11 @@ insert into s2 select * from s1;
      select * from s1 where key3 in (select key1 from s2 where key1>'a' and key1<'b')
      ```
 
-     
-
-     
+     对于s2表的访问可以使用到key1列，结果正好也是key1列。可将s2作为驱动表，并且key1有多个重复时只取第一个
 
    - Semi-join Materialization （半连接物化）
+
+     
 
    - FirstMatch（首次匹配）
 
