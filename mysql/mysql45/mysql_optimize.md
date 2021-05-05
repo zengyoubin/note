@@ -379,5 +379,7 @@ explain select * from s1 where key1 in (select key1 from s2) or key3='a';
 explain select * from s1 where key1 in (select key1 from s2 where s1.key1=s2.key2) or key3='a';
 ```
 
+#### DEPENDENT UNION
 
+​	包含UNION或者UNION ALL的大查询中，如果各个小查询都依赖于外层查询，
 
