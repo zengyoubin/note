@@ -544,6 +544,10 @@ explain select * from s1 where key1 >'z' wgere key1 like '%a';
 ### JSON格式化的执行计划
 
 ```sql
+explain  format=json select * from s1 inner join s2 on s1.key1=s2.key2 where s1.common_field='a';
+```
+
+```json
 ```
 
 
