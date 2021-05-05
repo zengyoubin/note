@@ -387,5 +387,7 @@ explain select * from s1 where key1 in (select key1 from s2 where s1.key1=s2.key
 explain  select * from s1 where key1 in(select key1 from s2 where key1='a' union select key1 from s1 where key1='b');
 ```
 
-DERIVED
+#### DERIVED
+
+​	在包含派生表的查询中，如果是以物化派生表
 
