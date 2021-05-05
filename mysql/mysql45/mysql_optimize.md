@@ -389,5 +389,11 @@ explain  select * from s1 where key1 in(select key1 from s2 where key1='a' union
 
 #### DERIVED
 
-​	在包含派生表的查询中，如果是以物化派生表
+​	在包含派生表的查询中，如果是以物化派生表的方式执行。则派生表对应的子查询select_type为DERIVED
+
+```sql
+explain select * from (select key1,count(*) as c from s1 group by key1) as dervied_s1 where c>1;
+```
+
+
 
