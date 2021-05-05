@@ -407,7 +407,35 @@ explain select * from s1 where key1 in(select key1 from s2);
 
 ### type
 
+#### system
 
+​	表中只有一条记录并且存储引擎（MyISAM、MEMORY）的统计数据是精确的
+
+#### const
+
+​	使用主键或者唯一二级索引与常数等值匹配查询
+
+#### eq_ref
+
+​	连接查询时，被驱动表是通过主键或者不允许存储Null值的唯一耳机索引列进行等值匹配，被驱动表的type为eq_ref。
+
+#### ref
+
+#### fulltext
+
+#### ref_or_null
+
+#### index_merge
+
+#### unique_subquery
+
+#### index_subquery
+
+#### range
+
+#### index
+
+#### ALL
 
 
 
