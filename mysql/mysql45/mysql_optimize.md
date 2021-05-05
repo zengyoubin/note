@@ -662,23 +662,27 @@ select * from information_schema.OPTIMIZER_TRACE\G;
       }
     },
     {
-      "join_optimization": {
+      "join_optimization": { // optimize阶段
         "select#": 1,
         "steps": [
           {
-            "condition_processing": {
+            "condition_processing": { // 处理搜索条件
               "condition": "WHERE",
-              "original_condition": "((`s1`.`key1` > 'z') and (`s1`.`key2` < 10000001) and (`s1`.`key3` in ('a','b','c')) and (`s1`.`common_field` = 'abc'))",
+              // 原始搜索条件
+              "original_condition": "((`s1`.`key1` > 'z') and (`s1`.`key2` < 10000001) and (`s1`.`key3` in ('a','b','c')) and (`s1`.`common_field` = 'abc'))", 
               "steps": [
                 {
+                  // 等值传递转换
                   "transformation": "equality_propagation",
                   "resulting_condition": "((`s1`.`key1` > 'z') and (`s1`.`key2` < 10000001) and (`s1`.`key3` in ('a','b','c')) and (`s1`.`common_field` = 'abc'))"
                 },
                 {
+                  // 常量传递转换
                   "transformation": "constant_propagation",
                   "resulting_condition": "((`s1`.`key1` > 'z') and (`s1`.`key2` < 10000001) and (`s1`.`key3` in ('a','b','c')) and (`s1`.`common_field` = 'abc'))"
                 },
                 {
+                  // 去除无用条件
                   "transformation": "trivial_condition_removal",
                   "resulting_condition": "((`s1`.`key1` > 'z') and (`s1`.`key2` < 10000001) and (`s1`.`key3` in ('a','b','c')) and (`s1`.`common_field` = 'abc'))"
                 }
@@ -686,15 +690,17 @@ select * from information_schema.OPTIMIZER_TRACE\G;
             }
           },
           {
+            // 替换虚拟生成列
             "substitute_generated_columns": {}
           },
           {
+            // 表的依赖信息
             "table_dependencies": [
               {
                 "table": "`s1`",
-                "row_may_be_null": false,
-                "map_bit": 0,
-                "depends_on_map_bits": []
+                "row_may_be_null": false, 
+                "map_bit": 0, // map_bit 位图？不太懂
+                "depends_on_map_bits": [] 
               }
             ]
           },
