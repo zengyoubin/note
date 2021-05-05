@@ -395,5 +395,15 @@ explain  select * from s1 where key1 in(select key1 from s2 where key1='a' union
 explain select * from (select key1,count(*) as c from s1 group by key1) as dervied_s1 where c>1;
 ```
 
+#### MATERIALIZED
+
+​	包含子查询语句时，选择将子查询物化后与外层查询进行连接查询。该子查询的select_type为MATERIALIZED
+
+```sql
+explain select * from s1 where key1 in(select key1 from s2);
+```
+
+
+
 
 
