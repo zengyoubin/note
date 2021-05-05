@@ -807,12 +807,14 @@ select * from information_schema.OPTIMIZER_TRACE\G;
                         "cause": "cost"
                       }
                     ],
+                    // 分析是否使用索引合并
                     "analyzing_roworder_intersect": {
                       "usable": false,
-                      "cause": "too_few_roworder_scans"
+                      "cause": "too_few_roworder_scans" // 未使用原因
                     }
                   },
                   "chosen_range_access_summary": {
+                    // range 最终执行计划
                     "range_access_plan": {
                       "type": "range_scan",
                       "index": "idx_key1",
