@@ -813,8 +813,8 @@ select * from information_schema.OPTIMIZER_TRACE\G;
                       "cause": "too_few_roworder_scans" // 未使用原因
                     }
                   },
+                  // 对上面的查询最优的访问方法
                   "chosen_range_access_summary": {
-                    // range 最终执行计划
                     "range_access_plan": {
                       "type": "range_scan",
                       "index": "idx_key1",
@@ -832,6 +832,7 @@ select * from information_schema.OPTIMIZER_TRACE\G;
             ]
           },
           {
+            // 分析各种可能的执行计划（对于多表查询可能有很多种不同的方案）
             "considered_execution_plans": [
               {
                 "plan_prefix": [],
@@ -858,6 +859,7 @@ select * from information_schema.OPTIMIZER_TRACE\G;
             ]
           },
           {
+            // 尝试给查询添加一些其他的查询条件（为了便于索引下推）
             "attaching_conditions_to_tables": {
               "original_condition": "((`s1`.`key1` > 'z') and (`s1`.`key2` < 10000001) and (`s1`.`key3` in ('a','b','c')) and (`s1`.`common_field` = 'abc'))",
               "attached_conditions_computation": [],
@@ -882,7 +884,7 @@ select * from information_schema.OPTIMIZER_TRACE\G;
       }
     },
     {
-      "join_execution": {
+      "join_execution": { // execute 阶段
         "select#": 1,
         "steps": []
       }
