@@ -629,5 +629,23 @@ explain  format=json select * from s1 inner join s2 on s1.key1=s2.key2 where s1.
 
 
 
+## optimizer trace
 
+优化过程大致分为3个阶段
+
+- prepare阶段
+- optimize阶段
+- execute阶段
+
+示例：
+
+```sql
+set optimizer_trace='enabled=on';
+select * from s1 where key1 > 'z' and key2 <1000000 and key3 in ('a','b','c') and common_field ='abc';
+select * from information_schema.OPTIMIZER_TRACE;
+```
+
+```json
+
+```
 
