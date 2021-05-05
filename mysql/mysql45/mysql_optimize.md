@@ -441,9 +441,15 @@ explain select * from s1 where key1='a' or key1 is null;
 explain select * from s1 where key1='a' or key3 = 'a'
 ```
 
-
-
 #### unique_subquery
+
+​	针对包含in子查询的语句，查询优化器决定将in子查询转换为exists子查询，而且子查询在转换后可以使用主键或者不允许存储Null值的唯一二级索引进行等值匹配。
+
+```sql
+explain select * from s1 where common_field in (select id from s2 where s1.common_field=s2.common_field) or key3='a';
+```
+
+
 
 #### index_subquery
 
