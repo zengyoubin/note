@@ -381,5 +381,11 @@ explain select * from s1 where key1 in (select key1 from s2 where s1.key1=s2.key
 
 #### DEPENDENT UNION
 
-​	包含UNION或者UNION ALL的大查询中，如果各个小查询都依赖于外层查询，
+​	包含UNION或者UNION ALL的大查询中，如果各个小查询都依赖于外层查询，则除了最左边的那个小查询之外，其余小查询的select_type就是DEPENDENT UNION。
+
+```sql
+explain  select * from s1 where key1 in(select key1 from s2 where key1='a' union select key1 from s1 where key1='b');
+```
+
+DERIVED
 
