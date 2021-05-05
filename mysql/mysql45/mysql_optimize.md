@@ -699,23 +699,26 @@ select * from information_schema.OPTIMIZER_TRACE\G;
               {
                 "table": "`s1`",
                 "row_may_be_null": false, 
-                "map_bit": 0, // map_bit 位图？不太懂
-                "depends_on_map_bits": [] 
+                "map_bit": 0, // 表的映射编号
+                "depends_on_map_bits": [] // 依赖映射表
               }
             ]
           },
           {
+            // 所有可以用的ref类型索引
             "ref_optimizer_key_uses": []
           },
           {
+            // 预计不同单标访问方法的访问成本
             "rows_estimation": [
               {
                 "table": "`s1`",
-                "range_analysis": {
+                "range_analysis": {  //全部扫描
                   "table_scan": {
                     "rows": 9116,
                     "cost": 1854.3
                   },
+                  // 分析可能使用的索引
                   "potential_range_indexes": [
                     {
                       "index": "PRIMARY",
@@ -751,11 +754,13 @@ select * from information_schema.OPTIMIZER_TRACE\G;
                       "cause": "not_applicable"
                     }
                   ],
+                  // 索引下推条件
                   "setup_range_conditions": [],
                   "group_index_range": {
                     "chosen": false,
                     "cause": "not_group_by_or_distinct"
                   },
+                  // 分析使用各个索引成本
                   "analyzing_range_alternatives": {
                     "range_scan_alternatives": [
                       {
@@ -763,14 +768,14 @@ select * from information_schema.OPTIMIZER_TRACE\G;
                         "ranges": [
                           "NULL < key2 < 10000001"
                         ],
-                        "index_dives_for_eq_ranges": true,
-                        "rowid_ordered": false,
-                        "using_mrr": false,
-                        "index_only": false,
-                        "rows": 4558,
+                        "index_dives_for_eq_ranges": true, // 是否使用index dive
+                        "rowid_ordered": false, // 使用该索引获取的记录是否按照主键排序
+                        "using_mrr": false,	// 是否使用mrr(Multi-Range Read)
+                        "index_only": false, // 是否使用覆盖索引
+                        "rows": 4558, 
                         "cost": 5470.6,
-                        "chosen": false,
-                        "cause": "cost"
+                        "chosen": false, // 是否选中
+                        "cause": "cost" // 不使用该索引的原因
                       },
                       {
                         "index": "idx_key1",
