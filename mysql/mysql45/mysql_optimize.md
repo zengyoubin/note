@@ -427,7 +427,21 @@ explain select * from s1 where key1 in(select key1 from s2);
 
 #### ref_or_null
 
+​	普通二级索引列进行等值匹配且该索引列的值也可以是Null时。
+
+```sql
+explain select * from s1 where key1='a' or key1 is null;
+```
+
 #### index_merge
+
+​	使用了索引合并方式
+
+```sql
+explain select * from s1 where key1='a' or key3 = 'a'
+```
+
+
 
 #### unique_subquery
 
