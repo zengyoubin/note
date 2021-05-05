@@ -476,7 +476,18 @@ explain select key_part2 from s1 where key_part3='a';
  有三部分组成
 
 - 该列的实际数据最多占用的存储空间长度。
-- 如果该列可以
+- 如果该列可以存储null值，key_len +1 
+- 对于使用变长类型的列来说，key_len+2
+
+### ref
+
+​	当访问方法是const、eq_ref、ref、ref_or_null、unique_subquery、index_subquery中的一个时，ref列展示的就是与索引列进行匹配值的是啥。
+
+### rows
+
+### filtered
+
+
 
 
 
