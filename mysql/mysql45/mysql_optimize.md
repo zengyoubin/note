@@ -566,8 +566,8 @@ explain  format=json select * from s1 inner join s2 on s1.key1=s2.key2 where s1.
           "rows_produced_per_join": 911, // 预计扇出记录
           "filtered": "10.00", // 扇出百分比
           "cost_info": {
-            "read_cost": "1669.88", 
-            "eval_cost": "182.32",
+            "read_cost": "1669.88",  // I/O成本 + rows(1-filter)条记录的cpu成本
+            "eval_cost": "182.32",  // rows * filter 的成本
             "prefix_cost": "1852.20", // 单次查询s1 总成本
             "data_read_per_join": "2M" // 读取的数据量
           },
@@ -581,23 +581,23 @@ explain  format=json select * from s1 inner join s2 on s1.key1=s2.key2 where s1.
             "key_part3",
             "common_field"
           ],
-          // 
+          // 查询s1表时的查询条件
           "attached_condition": "((`test`.`s1`.`common_field` = 'a') and (`test`.`s1`.`key1` is not null))"
         } 
       },
       {
         "table": {
-          "table_name": "s2",
-          "access_type": "ref",
+          "table_name": "s2", //被驱动表
+          "access_type": "ref", 
           "possible_keys": [
             "uk_key2"
           ],
-          "key": "uk_key2",
-          "used_key_parts": [
+          "key": "uk_key2", // 实际使用索引
+          "used_key_parts": [ // 使用到的索引列
             "key2"
           ],
           "key_length": "5",
-          "ref": [
+          "ref": [ // 与key2列进行等值匹配的对象
             "test.s1.key1"
           ],
           "rows_examined_per_scan": 1,
