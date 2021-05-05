@@ -403,6 +403,10 @@ explain select * from (select key1,count(*) as c from s1 group by key1) as dervi
 explain select * from s1 where key1 in(select key1 from s2);
 ```
 
+### partitions
+
+### type
+
 
 
 
