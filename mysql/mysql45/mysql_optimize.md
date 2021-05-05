@@ -459,17 +459,24 @@ explain select * from s1 where common_field in (select id from s2 where s1.commo
 
 #### index
 
-​	可以使用覆盖索引，但需要扫描全部的索引记录时。
+​	可以使用覆盖索引，但需要扫描全部的索引记录时。使用innodb引擎时，如果需要执行全表扫描，并且需要对主键进行排序是，此时type也为index。
 
 ```sql
 explain select key_part2 from s1 where key_part3='a';
 ```
 
-
-
-
-
 #### ALL
+
+### possible_keys
+
+### key
+
+### key_len
+
+ 有三部分组成
+
+- 该列的实际数据最多占用的存储空间长度。
+- 如果该列可以
 
 
 
