@@ -548,6 +548,83 @@ explain  format=json select * from s1 inner join s2 on s1.key1=s2.key2 where s1.
 ```
 
 ```json
+{
+  "query_block": {
+    "select_id": 1, // 整个查询语句中只有一个select关键字，并且关键字对应的id号为1
+    "cost_info": {
+      "query_cost": "2953.12" // 整个查询的执行成本预计
+    },
+    "nested_loop": [ // 采用嵌套循环链接算法执行查询
+      {
+        "table": { 
+          "table_name": "s1", // s1 是驱动表
+          "access_type": "ALL", // 访问方法为ALL
+          "possible_keys": [
+            "idx_key1" 
+          ],
+          "rows_examined_per_scan": 9116, // 查询一次s1预计扫描记录
+          "rows_produced_per_join": 911, // 预计扇出记录
+          "filtered": "10.00", // 扇出百分比
+          "cost_info": {
+            "read_cost": "1669.88", 
+            "eval_cost": "182.32",
+            "prefix_cost": "1852.20", // 单次查询s1 总成本
+            "data_read_per_join": "2M" // 读取的数据量
+          },
+          "used_columns": [
+            "id",
+            "key1",
+            "key2",
+            "key3",
+            "key_part1",
+            "key_part2",
+            "key_part3",
+            "common_field"
+          ],
+          // 
+          "attached_condition": "((`test`.`s1`.`common_field` = 'a') and (`test`.`s1`.`key1` is not null))"
+        } 
+      },
+      {
+        "table": {
+          "table_name": "s2",
+          "access_type": "ref",
+          "possible_keys": [
+            "uk_key2"
+          ],
+          "key": "uk_key2",
+          "used_key_parts": [
+            "key2"
+          ],
+          "key_length": "5",
+          "ref": [
+            "test.s1.key1"
+          ],
+          "rows_examined_per_scan": 1,
+          "rows_produced_per_join": 917,
+          "filtered": "100.00",
+          "index_condition": "(`test`.`s1`.`key1` = `test`.`s2`.`key2`)",
+          "cost_info": {
+            "read_cost": "917.43",
+            "eval_cost": "183.49",
+            "prefix_cost": "2953.12",
+            "data_read_per_join": "2M"
+          },
+          "used_columns": [
+            "id",
+            "key1",
+            "key2",
+            "key3",
+            "key_part1",
+            "key_part2",
+            "key_part3",
+            "common_field"
+          ]
+        }
+      }
+    ]
+  }
+}
 ```
 
 
