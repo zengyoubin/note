@@ -449,13 +449,25 @@ explain select * from s1 where key1='a' or key3 = 'a'
 explain select * from s1 where common_field in (select id from s2 where s1.common_field=s2.common_field) or key3='a';
 ```
 
-
-
 #### index_subquery
+
+​	同上，只不过使用的是普通索引。
 
 #### range
 
+​	使用索引获取某些单点扫描区间。
+
 #### index
+
+​	可以使用覆盖索引，但需要扫描全部的索引记录时。
+
+```sql
+explain select key_part2 from s1 where key_part3='a';
+```
+
+
+
+
 
 #### ALL
 
