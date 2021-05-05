@@ -487,6 +487,28 @@ explain select key_part2 from s1 where key_part3='a';
 
 ### filtered
 
+### Extra
+
+#### No tables used
+
+#### Impossible where 
+
+​	查询语句中where 里永远为False
+
+#### No matching min/max row
+
+#### Using index
+
+​	使用覆盖索引
+
+#### Using index condition
+
+​	搜索条件中虽然出现索引列，但却不能充当边界条件来形成扫描区间。
+
+```sql
+explain select * from s1 where key1 >'z' wgere key1 like '%a';
+```
+
 
 
 
