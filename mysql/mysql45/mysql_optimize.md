@@ -237,27 +237,27 @@ insert into s2 select * from s1;
 
    1. 标量子查询
 
-      ```sql 
-      select (select max(key2) from s1)
-      ```
+```sql 
+ select (select max(key2) from s1)
+```
 
    2. 行子查询
 
-      ```sql
-      select * from s1 where (key1,key2)=(select key1,key2 from s2 limit 1)
-      ```
+```sql
+select * from s1 where (key1,key2)=(select key1,key2 from s2 limit 1)
+```
 
    3. 列子查询
 
-      ```sql
-      select * from s1 where key1 in (select key3 from s2)
-      ```
+```sql
+select * from s1 where key1 in (select key3 from s2)
+```
 
    4. 表子查询
 
-      ```sql
-      select * from s1 where (key1,key2) in (select key1,key2 from s2)
-      ```
+```sql
+select * from s1 where (key1,key2) in (select key1,key2 from s2)
+```
 
 2. 按与外层查询的关系来区分子查询
 
