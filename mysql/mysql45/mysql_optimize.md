@@ -503,11 +503,33 @@ explain select key_part2 from s1 where key_part3='a';
 
 #### Using index condition
 
-​	搜索条件中虽然出现索引列，但却不能充当边界条件来形成扫描区间。
+​	搜索条件中虽然出现索引列，但却不能充当边界条件来形成扫描区间。可能使用了索引下推优化。
 
 ```sql
 explain select * from s1 where key1 >'z' wgere key1 like '%a';
 ```
+
+#### Using where 
+
+​	当某个搜索条件需要在server层判断时。
+
+#### Using join buffer (Block Nested Loop)
+
+#### Using intersect(...)
+
+​	使用了索引合并
+
+#### Using union(...)
+
+​	同上
+
+#### Using sort_union(...)
+
+​	同上
+
+#### Zero limit
+
+#### Using filesort
 
 
 
