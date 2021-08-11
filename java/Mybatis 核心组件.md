@@ -16,6 +16,7 @@
     - `CallbleStatementHandler`
   - `RoutingStatementHandler`可通过`MappedStatement.statementType`指定使用`BaseSetatementHandler`的子类来执行
 - `ParameterHandler`  负责对用户传递的参数转换成JDBC Statement 所对应的数据类型
+  - `DefaultParameterHandler`
 - `ResultSetHandler`  负责将JDBC返回的ResultSet结果集对象转换成List类型的集合
 - `TypeHandler`      负责java数据类型和jdbc数据类型(也可以说是数据表列类型)之间的映射和转换
 - `MappedStatement`  MappedStatement维护一条<select|update|delete|insert>节点的封装
