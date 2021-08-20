@@ -1,128 +1,11 @@
 <!--ts-->
-   * [类加载、连接与初始化](#类加载连接与初始化)
-         * [类加载器](#类加载器)
-                  * [java虚拟机与程序的生命周期](#java虚拟机与程序的生命周期)
-      * [加载](#加载)
-      * [连接](#连接)
-      * [初始化](#初始化)
-         * [初始化时机](#初始化时机)
-      * [常量本质](#常量本质)
-      * [类加载器](#类加载器-1)
-         * [类加载器的双亲委派机制](#类加载器的双亲委派机制)
-         * [命名空间](#命名空间)
-         * [线程上下文加载器](#线程上下文加载器)
-         * [不同类加载器的命名空间的关系](#不同类加载器的命名空间的关系)
-      * [类的卸载](#类的卸载)
-   * [Java字节码](#java字节码)
-      * [整体结构](#整体结构)
-         * [字节码结构](#字节码结构)
-         * [常量表](#常量表)
-            * [常量池数据结构总表](#常量池数据结构总表)
-         * [Access_Flag访问标志符](#access_flag访问标志符)
-         * [字段表](#字段表)
-            * [字段表结构](#字段表结构)
-            * [字段访问标志](#字段访问标志)
-            * [描述符标识字符含义](#描述符标识字符含义)
-         * [方法表](#方法表)
-            * [方法表结构](#方法表结构)
-            * [方法访问标志符](#方法访问标志符)
-         * [属性结构](#属性结构)
-            * [属性表结构](#属性表结构)
-            * [虚拟机规范预定义的属性](#虚拟机规范预定义的属性)
-               * [Code属性](#code属性)
-               * [Exceptions属性](#exceptions属性)
-               * [LineNumberTable属性](#linenumbertable属性)
-               * [LocalVariableTable及LocalVaribleTypeTable属性](#localvariabletable及localvaribletypetable属性)
-               * [SourceFile属性](#sourcefile属性)
-               * [SourceDebugExtension属性](#sourcedebugextension属性)
-               * [ConstantValue属性](#constantvalue属性)
-               * [InnerClasses属性](#innerclasses属性)
-               * [Deprecated及Synthetic属性](#deprecated及synthetic属性)
-               * [StackMapTable属性](#stackmaptable属性)
-               * [Signature属性](#signature属性)
-               * [BootstrapMethods属性](#bootstrapmethods属性)
-               * [MethodParameters属性](#methodparameters属性)
-         * [字节码分析](#字节码分析)
-   * [JVM内存空间](#jvm内存空间)
-         * [Java虚拟机栈](#java虚拟机栈)
-            * [栈帧](#栈帧)
-               * [局部变量表](#局部变量表)
-               * [操作数栈](#操作数栈)
-               * [动态链接](#动态链接)
-         * [程序计数器（Program Counter）](#程序计数器program-counter)
-         * [本地方法栈](#本地方法栈)
-         * [Java 堆（Heap）](#java-堆heap)
-         * [方法区(Method Area)](#方法区method-area)
-         * [运行时常量池](#运行时常量池)
-         * [直接内存（Direct Memory）](#直接内存direct-memory)
-      * [关于Java对象创建的过程](#关于java对象创建的过程)
-            * [new关键字创建对象的3个步骤](#new关键字创建对象的3个步骤)
-         * [指针碰撞](#指针碰撞)
-         * [空闲列表](#空闲列表)
-      * [对象在内存中的布局](#对象在内存中的布局)
-         * [引用访问对象的方式](#引用访问对象的方式)
-         * [jstack 命令](#jstack-命令)
-   * [JVM垃圾回收](#jvm垃圾回收)
-      * [内存](#内存)
-         * [内存结构](#内存结构)
-         * [内存分配](#内存分配)
-         * [内存回收](#内存回收)
-         * [方法区的垃圾回收](#方法区的垃圾回收)
-      * [JVM垃圾回收模型](#jvm垃圾回收模型)
-         * [垃圾判断算法](#垃圾判断算法)
-            * [引用计数算法（REference Counting）](#引用计数算法reference-counting)
-            * [可达性分析算法（Reachability Analysis ）](#可达性分析算法reachability-analysis-)
-         * [GC算法（常见的GC算法）](#gc算法常见的gc算法)
-            * [标记-清除算法(Mark-Sweep)](#标记-清除算法mark-sweep)
-            * [标记整理算法(Mark-Compact)](#标记整理算法mark-compact)
-            * [复制收集算法(Copying)](#复制收集算法copying)
-            * [分代算法(Generational)](#分代算法generational)
-         * [垃圾回收器的实现和选择](#垃圾回收器的实现和选择)
-            * [GC的时机](#gc的时机)
-            * [垃圾收集器的“并行”和“并发”](#垃圾收集器的并行和并发)
-            * [Serial收集器](#serial收集器)
-            * [ParNew收集器](#parnew收集器)
-            * [Parallel Scavenge收集器](#parallel-scavenge收集器)
-            * [Serial Old收集器](#serial-old收集器)
-            * [Parallel Old收集器](#parallel-old收集器)
-            * [CMS（Concurrent Mark Sweep）收集器](#cmsconcurrent-mark-sweep收集器)
-               * [CMS 收集器收集步骤](#cms-收集器收集步骤)
-      * [枚举根节点](#枚举根节点)
-      * [安全点（Safepoint）](#安全点safepoint)
-      * [安全区域（Safe Region）](#安全区域safe-region)
-      * [空间分配担保](#空间分配担保)
-      * [GC垃圾收集器的JVM参数定义](#gc垃圾收集器的jvm参数定义)
-   * [G1（Garbage First Collector）](#g1garbage-first-collector)
-         * [吞吐量](#吞吐量)
-         * [响应能力](#响应能力)
-      * [<a href="https://www.oracle.com/technetwork/tutorials/tutorials-1876574.html" rel="nofollow">G1 Garbage Collector</a>](#g1-garbage-collector)
-         * [传统垃圾收集器堆结构](#传统垃圾收集器堆结构)
-         * [G1 收集器堆结构](#g1-收集器堆结构)
-         * [G1 vs CMS](#g1-vs-cms)
-            * [G1相对于CMS的优势](#g1相对于cms的优势)
-            * [G1的适合场景](#g1的适合场景)
-         * [G1重要概念](#g1重要概念)
-            * [分区(Region)](#分区region)
-            * [收集集合（CSet）](#收集集合cset)
-            * [已记忆集合（RSet）](#已记忆集合rset)
-            * [Snapshot-At- The-Beginning(SATB)](#snapshot-at--the-beginningsatb)
-         * [G1 GC模式](#g1-gc模式)
-            * [global concurrent marking](#global-concurrent-marking)
-            * [G1在运行过程中的主要模式](#g1在运行过程中的主要模式)
-            * [G1 Mainor GC/Young GC](#g1-mainor-gcyoung-gc)
-            * [Mixed GC](#mixed-gc)
-            * [G1收集概念](#g1收集概念)
-               * [Humongous区域](#humongous区域)
-
-<!-- Added by: ahaschool, at: 2021年 8月20日 星期五 13时13分42秒 CST -->
-
 <!--te-->
 
 # 类加载、连接与初始化
 
 - 在Java代码中，类型（定义的class,interface等）的加载、连接与初始化过程都是在程序运行期间完成的
 
-## 类加载器
+- ### 类加载器
 
   - ###### java虚拟机与程序的生命周期
 
@@ -133,8 +16,7 @@
     - 程序在执行过程中遇到了异常或错误而异常终止
     - 由于操作系统出现错误而导致java虚拟机进程终止
 
-
-## 加载
+#### 加载
 
 > - 查找并加载类的二进制文件
 >
@@ -160,7 +42,7 @@
 >    - 如果这个类一直没有被程序主动使用， 那么**类加载器就不会报告错误**
 >
 
-## 连接
+#### 连接
 
 > 类被加载后，就进入连接阶段。连接就是将已经读入到内存的类的二进制数据合并到虚拟机的运行时环境中去。
 >
@@ -180,20 +62,20 @@
 >     public class Sample{
 >     	private static int a=1 ;
 >     	public static long b;
->                                                                       
+>                                                           
 >     	static {
 >     		b=2;
 >       }
 >       ...
 >     }
->                                                                       
+>                                                           
 >     ```
 >
 >     
 >
 > - 解析：**把类中的符号引用转换为直接引用**？
 
-## 初始化
+#### 初始化
 
 > - **为类的静态变量赋予正确的初始值**
 >
@@ -233,7 +115,7 @@
 >   - 假如类存在直接父类，并且这个父类还没有被初始化，那就先初始化直接父类
 >   - 假如类中存在初始化语句，那就依次执行这些初始化语句
 
-### 初始化时机
+##### 初始化时机
 
 -  java程序对类的使用方式可以分为两种
 
@@ -270,7 +152,7 @@
 
 - 类加载器用来把类加载到Java虚拟机中。从JDK 1.2 版本开始，类的加载过程采用双亲委托机制，这种机制能更好地保证Java平台的安全。在此委托机制中，除了Java虚拟机自带的根类加载器以外，其余的类加载器都有且只有一个父加载器。当Java程序请求加载器loaderl加载Sample类时, loaderl首先委托自己的父加载器去加载Sample类，若父加载器能加载，则由父加载器完成加载任务，否则才由加载器loaderl 本身加载Sample类。
 
-## 常量本质
+#### 常量本质
 
 - 编译时期能够确定的常量会在编译器放到被调用类的常量表中
 
@@ -341,7 +223,7 @@ class MyParent3 {
 }
 ```
 
-## 类加载器
+#### 类加载器
 
 - Java虚拟机自带了以下几种加载器。
   - 根 (`Bootstrap`)类加载器:该加载器没有父加载器。它负责加载虚拟机的核心类库,如`java.lang.*`等。`java.lang.Object`就是由根类加载器加载的。根类加载器从系统属性`sun.boot.class.path`所指定的目录中加载类库。根类加载器的实现依赖于底层操作系统，属于虚拟机的实现的一部分，它并没有继承`java.lang.ClassLoader`类。
@@ -349,19 +231,19 @@ class MyParent3 {
   - 系统 (`System`)类加载器:也称为应用类加载器，它的父加载器为扩展类加载器。它从环境变量`classpath`或者系统属性`java.class.path`所指定的目录中加载类，它是用户自定义的类加载器的默认父加载器。系统类加载器是纯Java类，是`java.lang.ClassLoader`类的子类。
   - 除了以上虚拟机自带的加载器外，用户还可以定制自己的类加载器。Java提供了抽象类`java.lang.ClassLoader`,所有用户自定义的类加载器都应该继承`ClassLoader`类。
 
-### 类加载器的双亲委派机制
+##### 类加载器的双亲委派机制
 
 - 在双亲委派机制中，各个加载器按照父子关系形成了**树形结构**，除了根类加载器之外，其余的类加载器都有且只有一个父加载器
 
 ![image-20200316232944582](https://oscimg.oschina.net/oscnet/682ecf441093e1fdd43e4d1c7cf500ceef9.jpg)
 
-### 命名空间
+##### 命名空间
 
 - 每个类加载器都有自己的命名空间，命名空间由该加载器及所有父加载器所加载的类组成。
 - 在同一个命名空间中，不会出现类的完整名字(包括类的包名)相同的两个类
 - 在不同的命名空间中，有可能会出现类的完整名字(包括类的包名)相同的两个类
 
-### 线程上下文加载器
+##### 线程上下文加载器
 
 - 当前类加载器(Current Classloader)
 
@@ -375,14 +257,14 @@ class MyParent3 {
 - 线程上下文类加载器就是当前线程的Current Classloader.
     ​	在双亲委托模型下，类加载是由下至上的，即下层的类加载器会委托上层进行加载。但是对于sPI来说，有些接口是Java核心库所提供的，而Java核心库是由启动类加载器来加载的，而这些接口的实现却来自于不同的jar包(厂 商提供)，Java的启动类加载器是不会加载其他来源的jar包，这样传统的双亲委托模型就无法满足SPI的要求。而通过给当前线程设置上下文类加载器，就可以由设置的上下文类加载器来实现对于接口实现类的加载。
 
-### 不同类加载器的命名空间的关系
+##### 不同类加载器的命名空间的关系
 
 - 同一个命名空间内的类是相互可见的。
 - 子加载器的命名空间包含所有父加载器的命名空间。因此由子加载器加载的类能看见父加载器加载的类。例如系统类加载器加载的类能看见根类加载器加载的类。
 - 由父加载器加载的类不能看见子加载器加载的类。
 - 如果两个加载器之间没有直接或间接的父子关系，那么它们各自加载的类相互不可见。
 
-## 类的卸载
+### 类的卸载
 
 - 当MySample类被加载、连接和初始化后，它的生命周期就开始了。当代表MySample类的Class对象不再被引用，即不可触及时，Class对象就会结束生命周期，MySample类在方法区内的数据也会被卸载，从而结東MySample类的生命周期。
 - **一个类何时结束生命周期，取决于代表它的Class对象何时结束生命周期**
