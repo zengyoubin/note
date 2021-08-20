@@ -1,5 +1,6 @@
-1. ## [句子成分](./grammar/句子成分)
+## [jvm](./java/jvm_video_note)
 
-2. ## [名词](./grammar/名词)
+## [spring 概览](./java/spring_note)
 
-3. ## [代词](./grammar/代词)
+## [mysql 概览](./mysql/mysql45/note)
+## [mysql 优化器](./mysql/mysql45/mysql_optimize)
