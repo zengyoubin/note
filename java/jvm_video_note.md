@@ -51,7 +51,7 @@
       * [本地方法栈](#本地方法栈)
       * [Java 堆（Heap）](#java-堆heap)
       * [方法区(Method Area)](#方法区method-area)
-      * [运行时常量池](#运行时常量池)
+         * [运行时常量池](#运行时常量池)
       * [直接内存（Direct Memory）](#直接内存direct-memory)
       * [关于Java对象创建的过程](#关于java对象创建的过程)
             * [new关键字创建对象的3个步骤](#new关键字创建对象的3个步骤)
@@ -91,8 +91,8 @@
       * [空间分配担保](#空间分配担保)
       * [GC垃圾收集器的JVM参数定义](#gc垃圾收集器的jvm参数定义)
    * [G1（Garbage First Collector）](#g1garbage-first-collector)
-         * [吞吐量](#吞吐量)
-         * [响应能力](#响应能力)
+      * [吞吐量](#吞吐量)
+      * [响应能力](#响应能力)
       * [<a href="https://www.oracle.com/technetwork/tutorials/tutorials-1876574.html" rel="nofollow">G1 Garbage Collector</a>](#g1-garbage-collector)
          * [传统垃圾收集器堆结构](#传统垃圾收集器堆结构)
          * [G1 收集器堆结构](#g1-收集器堆结构)
@@ -112,7 +112,7 @@
             * [G1收集概念](#g1收集概念)
                * [Humongous区域](#humongous区域)
 
-<!-- Added by: ahaschool, at: 2021年 8月20日 星期五 13时57分45秒 CST -->
+<!-- Added by: ahaschool, at: 2021年 8月20日 星期五 14时10分03秒 CST -->
 
 <!--te-->
 
@@ -178,13 +178,13 @@
 >     public class Sample{
 >     	private static int a=1 ;
 >     	public static long b;
->                                                                                       
+>                                                                                           
 >     	static {
 >     		b=2;
 >       }
 >       ...
 >     }
->                                                                                       
+>                                                                                           
 >     ```
 >
 >     
@@ -1294,7 +1294,7 @@ LineNumberTable_attribute{
 - 在Java虚拟机中，方法区( method area)是可供各个线程共享的运行时内存区域。方法区与传统语言中的编译代码存储区(storageareaforcompiledcode)或者操作系统进程的正文段( text segment)的作用非常类似，它存储了每一个类的结构信息，例如，运行时常量池( runtime constant pool)、字段和方法数据、构造函数和普通方法的字节码内容，还包括一些在类、实例、接口初始化时用到的特殊方法。
 - 存储元信息。永久代(Permanent Generation) ，从JDK 1.8开始， 已经彻底废弃了永久代，使用元空间
 
-## 运行时常量池
+### 运行时常量池
 
 - 运行时常量池( runtime constant pool)是class文件中每一个类或接口的常量池表( constant_ pool table)的运行时表示形式，它包括了若干种不同的常量，从编译期可知的数值字面量到必须在运行期解析后才能获得的方法或字段引用。运行时常量池类似于传统语言中的符号表(symbol table),不过它存储数据的范围比通常意义上的符号表要更为广泛。
 - 每一个运行时常量池都在Java虚拟机的方法区中分配,在加载类和接口到虚拟机后，就创建对应的运行时常量池。
