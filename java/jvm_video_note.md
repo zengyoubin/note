@@ -1,4 +1,8 @@
-# 类加载、连接与初始化
+[TOC]
+
+
+
+## 类加载、连接与初始化
 
 - 在Java代码中，类型（定义的class,interface等）的加载、连接与初始化过程都是在程序运行期间完成的
 
@@ -59,13 +63,13 @@
 >     public class Sample{
 >     	private static int a=1 ;
 >     	public static long b;
->           
+>               
 >     	static {
 >     		b=2;
 >       }
 >       ...
 >     }
->           
+>               
 >     ```
 >
 >     
@@ -271,7 +275,7 @@ class MyParent3 {
 
 
 
-# Java字节码
+## Java字节码
 
 ### 整体结构
 
@@ -1130,7 +1134,7 @@ LineNumberTable_attribute{
 
 
 
-# JVM内存空间
+## JVM内存空间
 
 #### Java虚拟机栈
 
@@ -1226,7 +1230,7 @@ LineNumberTable_attribute{
 #### jstack 命令
 - 可以查看或是导出Java应用程序中线程的堆栈信息
 
-# JVM垃圾回收
+## JVM垃圾回收
 
 ### 内存
 

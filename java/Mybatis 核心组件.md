@@ -1,3 +1,5 @@
+[TOC]
+
 # Mybatis 核心组件
 
 - `Configuration`     MyBatis所有的配置信息都保存在Configuration对象之中，配置文件中的大部分配置都会存储到该类中
