@@ -39,59 +39,59 @@
          * [IN 子查询优化](#in-子查询优化)
             * [子查询转半连接](#子查询转半连接)
    * [EXPLAIN](#explain)
-         * [table](#table)
-         * [id](#id)
-         * [select_type](#select_type)
-            * [SIMPLE](#simple)
-            * [PRIMARY](#primary)
-            * [UNION](#union)
-            * [UNION RESULT](#union-result)
-            * [SUBQUERY](#subquery)
-            * [DEPENDENT SUBQUERY](#dependent-subquery)
-            * [DEPENDENT UNION](#dependent-union)
-            * [DERIVED](#derived)
-            * [MATERIALIZED](#materialized)
-         * [partitions](#partitions)
-         * [type](#type)
-            * [system](#system)
-            * [const](#const)
-            * [eq_ref](#eq_ref)
-            * [ref](#ref)
-            * [fulltext](#fulltext)
-            * [ref_or_null](#ref_or_null)
-            * [index_merge](#index_merge)
-            * [unique_subquery](#unique_subquery)
-            * [index_subquery](#index_subquery)
-            * [range](#range)
-            * [index](#index)
-            * [ALL](#all)
-         * [possible_keys](#possible_keys)
-         * [key](#key)
-         * [key_len](#key_len)
-         * [ref](#ref-1)
-         * [rows](#rows)
-         * [filtered](#filtered)
-         * [Extra](#extra)
-            * [No tables used](#no-tables-used)
-            * [Impossible where](#impossible-where)
-            * [No matching min/max row](#no-matching-minmax-row)
-            * [Using index](#using-index)
-            * [Using index condition](#using-index-condition)
-            * [Using where](#using-where)
-            * [Using join buffer (Block Nested Loop)](#using-join-buffer-block-nested-loop)
-            * [Using intersect(...)](#using-intersect)
-            * [Using union(...)](#using-union)
-            * [Using sort_union(...)](#using-sort_union)
-            * [Zero limit](#zero-limit)
-            * [Using filesort](#using-filesort)
-            * [Using temporary](#using-temporary)
-            * [Start temporary，End temporary](#start-temporaryend-temporary)
-            * [LooseScan](#loosescan)
-            * [FirstMatch(tbl_name)](#firstmatchtbl_name)
+      * [table](#table)
+      * [id](#id)
+      * [select_type](#select_type)
+         * [SIMPLE](#simple)
+         * [PRIMARY](#primary)
+         * [UNION](#union)
+         * [UNION RESULT](#union-result)
+         * [SUBQUERY](#subquery)
+         * [DEPENDENT SUBQUERY](#dependent-subquery)
+         * [DEPENDENT UNION](#dependent-union)
+         * [DERIVED](#derived)
+         * [MATERIALIZED](#materialized)
+      * [partitions](#partitions)
+      * [type](#type)
+         * [system](#system)
+         * [const](#const)
+         * [eq_ref](#eq_ref)
+         * [ref](#ref)
+         * [fulltext](#fulltext)
+         * [ref_or_null](#ref_or_null)
+         * [index_merge](#index_merge)
+         * [unique_subquery](#unique_subquery)
+         * [index_subquery](#index_subquery)
+         * [range](#range)
+         * [index](#index)
+         * [ALL](#all)
+      * [possible_keys](#possible_keys)
+      * [key](#key)
+      * [key_len](#key_len)
+      * [ref](#ref-1)
+      * [rows](#rows)
+      * [filtered](#filtered)
+      * [Extra](#extra)
+         * [No tables used](#no-tables-used)
+         * [Impossible where](#impossible-where)
+         * [No matching min/max row](#no-matching-minmax-row)
+         * [Using index](#using-index)
+         * [Using index condition](#using-index-condition)
+         * [Using where](#using-where)
+         * [Using join buffer (Block Nested Loop)](#using-join-buffer-block-nested-loop)
+         * [Using intersect(...)](#using-intersect)
+         * [Using union(...)](#using-union)
+         * [Using sort_union(...)](#using-sort_union)
+         * [Zero limit](#zero-limit)
+         * [Using filesort](#using-filesort)
+         * [Using temporary](#using-temporary)
+         * [Start temporary，End temporary](#start-temporaryend-temporary)
+         * [LooseScan](#loosescan)
+         * [FirstMatch(tbl_name)](#firstmatchtbl_name)
       * [JSON格式化的执行计划](#json格式化的执行计划)
    * [optimizer trace](#optimizer-trace)
 
-<!-- Added by: ahaschool, at: 2021年 8月20日 星期五 14时33分10秒 CST -->
+<!-- Added by: ahaschool, at: 2021年 8月20日 星期五 14时35分42秒 CST -->
 
 <!--te-->
 
@@ -418,16 +418,16 @@ select * from s1 where (key1,key2) in (select key1,key2 from s2)
 
 # EXPLAIN 
 
-### table
+## table
 
-### id
+## id
 
 - id 越大优先级越高
 - id 相同 顺序是从上到下，如果是关联查询，上者是驱动表下者是被驱动表
 
-### select_type
+## select_type
 
-#### SIMPLE
+### SIMPLE
 
 ​	查询语句中不包含UNION或者子查询的查询
 
@@ -435,7 +435,7 @@ select * from s1 where (key1,key2) in (select key1,key2 from s2)
 explain select * from s1 inner join s2;
 ```
 
-#### PRIMARY
+### PRIMARY
 
 ​	对于包含UNION、UNION ALL或者子查询的大查询的组成部分
 
@@ -443,7 +443,7 @@ explain select * from s1 inner join s2;
 explain select * from s1 union select * from s2
 ```
 
-#### UNION
+### UNION
 
 ​	对于包含UNION、UNION ALL或者子查询的大查询的组成部分
 
@@ -451,7 +451,7 @@ explain select * from s1 union select * from s2
 explain select * from s1 union select * from s2
 ```
 
-#### UNION RESULT
+### UNION RESULT
 
 ​	使用临时表来完成UNION的去重操作
 
@@ -459,7 +459,7 @@ explain select * from s1 union select * from s2
 explain select * from s1 union select * from s2
 ```
 
-#### SUBQUERY
+### SUBQUERY
 
 ​	包含子查询不能转化为对应的半连接，并且该查询是不相关子查询，而且查询优化器决定采用将该子查询物化的方式来执行该子查询。
 
@@ -467,7 +467,7 @@ explain select * from s1 union select * from s2
 explain select * from s1 where key1 in (select key1 from s2) or key3='a';
 ```
 
-#### DEPENDENT SUBQUERY
+### DEPENDENT SUBQUERY
 
 ​	包含子查询不能转化为对应的半连接，并且该子查询被查询优化器转化为相关子查询的形式。
 
@@ -475,7 +475,7 @@ explain select * from s1 where key1 in (select key1 from s2) or key3='a';
 explain select * from s1 where key1 in (select key1 from s2 where s1.key1=s2.key2) or key3='a';
 ```
 
-#### DEPENDENT UNION
+### DEPENDENT UNION
 
 ​	包含UNION或者UNION ALL的大查询中，如果各个小查询都依赖于外层查询，则除了最左边的那个小查询之外，其余小查询的select_type就是DEPENDENT UNION。
 
@@ -483,7 +483,7 @@ explain select * from s1 where key1 in (select key1 from s2 where s1.key1=s2.key
 explain  select * from s1 where key1 in(select key1 from s2 where key1='a' union select key1 from s1 where key1='b');
 ```
 
-#### DERIVED
+### DERIVED
 
 ​	在包含派生表的查询中，如果是以物化派生表的方式执行。则派生表对应的子查询select_type为DERIVED
 
@@ -491,7 +491,7 @@ explain  select * from s1 where key1 in(select key1 from s2 where key1='a' union
 explain select * from (select key1,count(*) as c from s1 group by key1) as dervied_s1 where c>1;
 ```
 
-#### MATERIALIZED
+### MATERIALIZED
 
 ​	包含子查询语句时，选择将子查询物化后与外层查询进行连接查询。该子查询的select_type为MATERIALIZED
 
@@ -499,29 +499,29 @@ explain select * from (select key1,count(*) as c from s1 group by key1) as dervi
 explain select * from s1 where key1 in(select key1 from s2);
 ```
 
-### partitions
+## partitions
 
-### type
+## type
 
-#### system
+### system
 
 ​	表中只有一条记录并且存储引擎（MyISAM、MEMORY）的统计数据是精确的
 
-#### const
+### const
 
 ​	使用主键或者唯一二级索引与常数等值匹配查询
 
-#### eq_ref
+### eq_ref
 
 ​	连接查询时，被驱动表是通过主键或者不允许存储Null值的唯一耳机索引列进行等值匹配，被驱动表的type为eq_ref
 
-#### ref
+### ref
 
 ​	通过普通的二级索引列与常量进行等值匹配，或者连接查询时，被驱动表中的二级索引列与驱动表的某列进行等值匹配时，被驱动表的type为ref
 
-#### fulltext
+### fulltext
 
-#### ref_or_null
+### ref_or_null
 
 ​	普通二级索引列进行等值匹配且该索引列的值也可以是Null时。
 
@@ -529,7 +529,7 @@ explain select * from s1 where key1 in(select key1 from s2);
 explain select * from s1 where key1='a' or key1 is null;
 ```
 
-#### index_merge
+### index_merge
 
 ​	使用了索引合并方式
 
@@ -537,7 +537,7 @@ explain select * from s1 where key1='a' or key1 is null;
 explain select * from s1 where key1='a' or key3 = 'a'
 ```
 
-#### unique_subquery
+### unique_subquery
 
 ​	针对包含in子查询的语句，查询优化器决定将in子查询转换为exists子查询，而且子查询在转换后可以使用主键或者不允许存储Null值的唯一二级索引进行等值匹配。
 
@@ -545,15 +545,15 @@ explain select * from s1 where key1='a' or key3 = 'a'
 explain select * from s1 where common_field in (select id from s2 where s1.common_field=s2.common_field) or key3='a';
 ```
 
-#### index_subquery
+### index_subquery
 
 ​	同上，只不过使用的是普通索引。
 
-#### range
+### range
 
 ​	使用索引获取某些单点扫描区间。
 
-#### index
+### index
 
 ​	可以使用覆盖索引，但需要扫描全部的索引记录时。使用innodb引擎时，如果需要执行全表扫描，并且需要对主键进行排序是，此时type也为index。
 
@@ -561,13 +561,13 @@ explain select * from s1 where common_field in (select id from s2 where s1.commo
 explain select key_part2 from s1 where key_part3='a';
 ```
 
-#### ALL
+### ALL
 
-### possible_keys
+## possible_keys
 
-### key
+## key
 
-### key_len
+## key_len
 
  有三部分组成
 
@@ -575,29 +575,29 @@ explain select key_part2 from s1 where key_part3='a';
 - 如果该列可以存储null值，key_len +1 
 - 对于使用变长类型的列来说，key_len+2
 
-### ref
+## ref
 
 ​	当访问方法是const、eq_ref、ref、ref_or_null、unique_subquery、index_subquery中的一个时，ref列展示的就是与索引列进行匹配值的是啥。
 
-### rows
+## rows
 
-### filtered
+## filtered
 
-### Extra
+## Extra
 
-#### No tables used
+### No tables used
 
-#### Impossible where 
+### Impossible where 
 
 ​	查询语句中where 里永远为False
 
-#### No matching min/max row
+### No matching min/max row
 
-#### Using index
+### Using index
 
 ​	使用覆盖索引
 
-#### Using index condition
+### Using index condition
 
 ​	搜索条件中虽然出现索引列，但却不能充当边界条件来形成扫描区间。可能使用了索引下推优化。
 
@@ -605,37 +605,37 @@ explain select key_part2 from s1 where key_part3='a';
 explain select * from s1 where key1 >'z' wgere key1 like '%a';
 ```
 
-#### Using where 
+### Using where 
 
 ​	当某个搜索条件需要在server层判断时。
 
-#### Using join buffer (Block Nested Loop)
+### Using join buffer (Block Nested Loop)
 
-#### Using intersect(...)
+### Using intersect(...)
 
 ​	使用了索引合并
 
-#### Using union(...)
+### Using union(...)
 
 ​	同上
 
-#### Using sort_union(...)
+### Using sort_union(...)
 
 ​	同上
 
-#### Zero limit
+### Zero limit
 
-#### Using filesort
+### Using filesort
 
-#### Using temporary
+### Using temporary
 
-#### Start temporary，End temporary
+### Start temporary，End temporary
 
 ​	执行策略为Duplicate weedout
 
-#### LooseScan
+### LooseScan
 
-#### FirstMatch(tbl_name)
+### FirstMatch(tbl_name)
 
 ## JSON格式化的执行计划
 
