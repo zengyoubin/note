@@ -178,13 +178,13 @@
 >     public class Sample{
 >     	private static int a=1 ;
 >     	public static long b;
->                                                                                   
+>                                                                                       
 >     	static {
 >     		b=2;
 >       }
 >       ...
 >     }
->                                                                                   
+>                                                                                       
 >     ```
 >
 >     
@@ -1672,7 +1672,7 @@ LineNumberTable_attribute{
 
 # G1（Garbage First Collector）
 
-### 吞吐量
+## 吞吐量
 
 - 吞吐量关注的是，在一个指定的时间内，最大化一个应用的工作量。
 - 如下方式来衡量一个系统吞吐量的好坏:
@@ -1680,7 +1680,7 @@ LineNumberTable_attribute{
   - 数据库一小时可以完成多少次查询
 - 对于关注吞吐量的系统，卡顿是可以接受的，因为这个系统关注长时间的大量任务的执行能力，单次快速的响应并不值得考虑。
 
-### 响应能力
+## 响应能力
 
 - 响应能力指一个程序或者系统对请求是否能够及时响应，比如:
   - 一个桌面UI能多快地响应一个事件
