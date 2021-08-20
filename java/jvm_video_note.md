@@ -1,4 +1,7 @@
 <!--ts-->
+
+
+
       * [类加载、连接与初始化](#类加载连接与初始化)
          * [类加载器](#类加载器)
                   * [java虚拟机与程序的生命周期](#java虚拟机与程序的生命周期)
@@ -114,6 +117,8 @@
                * [G1收集概念](#g1收集概念)
                   * [Humongous区域](#humongous区域)
 
+
+
 <!-- Added by: ahaschool, at: 2021年 8月20日 星期五 12时54分02秒 CST -->
 
 <!--te-->
@@ -179,13 +184,13 @@
 >     public class Sample{
 >     	private static int a=1 ;
 >     	public static long b;
->                               
+>                                   
 >     	static {
 >     		b=2;
 >       }
 >       ...
 >     }
->                               
+>                                   
 >     ```
 >
 >     
