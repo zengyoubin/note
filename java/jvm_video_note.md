@@ -180,13 +180,13 @@
 >     public class Sample{
 >     	private static int a=1 ;
 >     	public static long b;
->                                                                               
+>                                                                                   
 >     	static {
 >     		b=2;
 >       }
 >       ...
 >     }
->                                                                               
+>                                                                                   
 >     ```
 >
 >     
