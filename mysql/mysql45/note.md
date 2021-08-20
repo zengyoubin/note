@@ -1,64 +1,63 @@
 <!--ts-->
    * [MySQL基本架构](#mysql基本架构)
-         * [MySQL可以分为两层Server层和存储引擎层。](#mysql可以分为两层server层和存储引擎层)
-            * [Server层](#server层)
-            * [连接器](#连接器)
-            * [查询缓存](#查询缓存)
-            * [分析器](#分析器)
-            * [优化器](#优化器)
-            * [执行器](#执行器)
+      * [Server层](#server层)
+         * [连接器](#连接器)
+         * [查询缓存](#查询缓存)
+         * [分析器](#分析器)
+         * [优化器](#优化器)
+         * [执行器](#执行器)
    * [MySQL查询](#mysql查询)
-         * [边读边发](#边读边发)
-         * [count(*)](#count)
-         * [order by](#order-by)
-            * [全字段排序](#全字段排序)
-            * [rowid 排序](#rowid-排序)
-         * [JOIN 查询](#join-查询)
-            * [Index Nested-Loop Join（NLJ）](#index-nested-loop-joinnlj)
-            * [Simple Nested-Loop Join](#simple-nested-loop-join)
-            * [Block Nested-Loop Join（BNL）](#block-nested-loop-joinbnl)
-            * [结论](#结论)
-            * [参数](#参数)
-            * [JOIN 优化](#join-优化)
-               * [Multi-Range Read（MRR）](#multi-range-readmrr)
-               * [Batched Key Access（BKA）](#batched-key-accessbka)
-               * [使用临时表](#使用临时表)
-               * [hash join](#hash-join)
-         * [group by](#group-by)
-            * [group by 优化方法](#group-by-优化方法)
-               * [索引](#索引)
+      * [边读边发](#边读边发)
+      * [count(*)](#count)
+      * [order by](#order-by)
+         * [全字段排序](#全字段排序)
+         * [rowid 排序](#rowid-排序)
+      * [JOIN 查询](#join-查询)
+         * [Index Nested-Loop Join（NLJ）](#index-nested-loop-joinnlj)
+         * [Simple Nested-Loop Join](#simple-nested-loop-join)
+         * [Block Nested-Loop Join（BNL）](#block-nested-loop-joinbnl)
+         * [结论](#结论)
+         * [参数](#参数)
+         * [JOIN 优化](#join-优化)
+            * [Multi-Range Read（MRR）](#multi-range-readmrr)
+            * [Batched Key Access（BKA）](#batched-key-accessbka)
+            * [使用临时表](#使用临时表)
+            * [hash join](#hash-join)
+      * [group by](#group-by)
+         * [group by 优化方法](#group-by-优化方法)
+            * [索引](#索引)
             * [直接排序](#直接排序)
    * [MySQL更新](#mysql更新)
       * [两阶段提交](#两阶段提交)
-            * [redo log 和 binlog 是怎么关联起来的?](#redo-log-和-binlog-是怎么关联起来的)
+         * [redo log 和 binlog 是怎么关联起来的?](#redo-log-和-binlog-是怎么关联起来的)
       * [change buffer](#change-buffer)
-            * [唯一索引的更新操作不能使用change buffer](#唯一索引的更新操作不能使用change-buffer)
+         * [唯一索引的更新操作不能使用change buffer](#唯一索引的更新操作不能使用change-buffer)
       * [自增值](#自增值)
          * [存储](#存储)
          * [不能回退](#不能回退)
          * [自增值锁的优化](#自增值锁的优化)
    * [InnoDB 存储](#innodb-存储)
-         * [缓冲池（buffer pool）](#缓冲池buffer-pool)
-         * [刷脏页（flush）](#刷脏页flush)
-            * [InnoDB 刷脏页的控制策略](#innodb-刷脏页的控制策略)
-         * [数据删除](#数据删除)
-            * [重建表](#重建表)
+      * [缓冲池（buffer pool）](#缓冲池buffer-pool)
+      * [刷脏页（flush）](#刷脏页flush)
+         * [InnoDB 刷脏页的控制策略](#innodb-刷脏页的控制策略)
+      * [数据删除](#数据删除)
+         * [重建表](#重建表)
    * [事务](#事务)
-         * [事务隔离的实现](#事务隔离的实现)
-         * [“快照”在MVCC的工作原理](#快照在mvcc的工作原理)
-               * [更新规则](#更新规则)
+      * [事务隔离的实现](#事务隔离的实现)
+      * [“快照”在MVCC的工作原理](#快照在mvcc的工作原理)
+         * [更新规则](#更新规则)
          * [查看长事务](#查看长事务)
    * [索引](#索引-1)
-         * [索引的常见模型](#索引的常见模型)
-         * [InnoDB 的索引](#innodb-的索引)
+      * [索引的常见模型](#索引的常见模型)
+      * [InnoDB 的索引](#innodb-的索引)
                   * [示例](#示例)
-            * [索引维护](#索引维护)
-            * [覆盖索引](#覆盖索引)
-            * [最左前缀原则](#最左前缀原则)
-            * [索引下推](#索引下推)
-         * [优化器的逻辑](#优化器的逻辑)
-            * [扫描行数是怎么判断的？](#扫描行数是怎么判断的)
-               * [MySQL 是怎样得到索引的基数的呢？](#mysql-是怎样得到索引的基数的呢)
+         * [索引维护](#索引维护)
+         * [覆盖索引](#覆盖索引)
+         * [最左前缀原则](#最左前缀原则)
+         * [索引下推](#索引下推)
+      * [优化器的逻辑](#优化器的逻辑)
+         * [扫描行数是怎么判断的？](#扫描行数是怎么判断的)
+            * [MySQL 是怎样得到索引的基数的呢？](#mysql-是怎样得到索引的基数的呢)
    * [MySQL锁](#mysql锁)
       * [全局锁](#全局锁)
       * [表级锁](#表级锁)
@@ -69,38 +68,38 @@
          * [死锁和死锁检测](#死锁和死锁检测)
       * [间隙锁](#间隙锁)
       * [Next-key lock](#next-key-lock)
-            * [加锁规则](#加锁规则)
+         * [加锁规则](#加锁规则)
    * [日志模块](#日志模块)
       * [binlog](#binlog)
-            * [参数](#参数-1)
+         * [参数](#参数-1)
       * [redo log](#redo-log)
-               * [WAL（Wirte-Ahead Logging）](#walwirte-ahead-logging)
-               * [redo log](#redo-log-1)
-            * [参数](#参数-2)
-            * [组提交（group commit）](#组提交group-commit)
-               * [binlog 和 redo log 组提交](#binlog-和-redo-log-组提交)
-               * [参数](#参数-3)
+         * [WAL（Wirte-Ahead Logging）](#walwirte-ahead-logging)
+            * [redo log](#redo-log-1)
+         * [参数](#参数-2)
+         * [组提交（group commit）](#组提交group-commit)
+            * [binlog 和 redo log 组提交](#binlog-和-redo-log-组提交)
+            * [参数](#参数-3)
       * [binlog和redo log区别](#binlog和redo-log区别)
 
-<!-- Added by: ahaschool, at: 2021年 8月20日 星期五 14时21分12秒 CST -->
+<!-- Added by: ahaschool, at: 2021年 8月20日 星期五 14时28分04秒 CST -->
 
 <!--te-->
 
 # MySQL基本架构
 
-### MySQL可以分为两层Server层和存储引擎层。
+- MySQL可以分为两层Server层和存储引擎层。
 
 ![MySQL逻辑架构图](image/0d2070e8f84c4801adbfa03bda1f98d9.png)
 
-#### Server层
+## Server层
 
-#### 连接器
+### 连接器
 
 ​	连接器负责跟客户端建立连接、获取权限、维持和管理连接。
 
 ​	客户端如果太长时间没动静，连接器就会自动将它断开。这个时间是由参数 `wait_timeout` 控制的，默认值是 **8** 小时
 
-#### 查询缓存
+### 查询缓存
 
 ​	MySQL 拿到一个查询请求后，会先到查询缓存看看，之前是不是执行过这条语句。之前执行过的语句及其结果可能会以 key-value 对的形式，被直接缓存在内存中。key 是查询的语句，value 是查询的结果。如果你的查询能够直接在这个缓存中找到 key，那么这个 value 就会被直接返回给客户端。
 
@@ -112,15 +111,15 @@
 
 ​	MySQL 也提供了这种“按需使用”的方式。你可以将参数 query_cache_type 设置成 DEMAND，这样对于默认的 SQL 语句都不使用查询缓存。
 
-#### 分析器
+### 分析器
 
 ​	分析器先会做“词法分析”。根据词法分析的结果，语法分析器会根据语法规则，判断你输入的这个 SQL 语句是否满足 MySQL 语法。
 
-#### 优化器
+### 优化器
 
 ​	优化器是在表里面有多个索引的时候，决定使用哪个索引。
 
-#### 执行器
+### 执行器
 
 ​	开始执行的时候，要先判断用户对该表有查询权限，没有则返回没有权限错误。（在命中缓存时，会再查询缓存返回寄过的时候做权限验证，查询也会在优化器之前调用precheck验证权限）。
 
@@ -128,75 +127,75 @@
 
 # MySQL查询
 
-### 边读边发
+## 边读边发
 
 1. 获取一行，写到 `net_buffer` 中。这块内存的大小是由参数 `net_buffer_length` 定义的，默认是 16k。
 2. 重复获取行，直到 net_buffer 写满，调用网络接口发出去。
 3. 如果发送成功，就清空 net_buffer，然后继续取下一行，并写入 net_buffer。
 4. 如果发送函数返回 EAGAIN 或 WSAEWOULDBLOCK，就表示本地网络栈（socket send buffer）写满了，进入等待。直到网络栈重新可写，再继续发送。
 
-### count(*)
+## count(*)
 
 ​	InnoDB 是索引组织表，主键索引树的叶子节点是数据，而普通索引树的叶子节点是主键值。所以，普通索引树比主键索引树小很多。对于 count(*) 这样的操作，遍历哪个索引树得到的结果逻辑上都是一样的。因此，MySQL 优化器会找到最小的那棵树来遍历。在保证逻辑正确的前提下，尽量减少扫描的数据量，是数据库系统设计的通用法则之一。
 
 ​	**count(字段)<count(主键 id)<count(1)≈count(*)**
 
-### order by
+## order by
 
-#### 全字段排序
+### 全字段排序
 
 ![](image/826579b63225def812330ef6c344a303.png)
 
 ​	Extra 这个字段中的`Using filesort`表示的就是需要排序，MySQL 会给每个线程分配一块内存用于排序，称为` sort_buffer`。可能在内存中完成，也可能需要使用外部排序，这取决于排序所需的内存和参数 `sort_buffer_size`。
 
-#### rowid 排序
+### rowid 排序
 
 ​	`max_length_for_sort_data`，是 MySQL 中专门控制用于排序的行数据的长度的一个参数。
 
-### JOIN 查询
+## JOIN 查询
 
-#### Index Nested-Loop Join（NLJ）
+### Index Nested-Loop Join（NLJ）
 
 ​	类似于嵌套查询，并且可以可以用上被驱动表的索引。
 
 	1. 使用 join 语句，性能比强行拆成多个单表执行 SQL 语句的性能要好；
 	2. 如果使用 join 语句的话，需要让小表做驱动表。
 
-#### Simple Nested-Loop Join
+### Simple Nested-Loop Join
 
-#### Block Nested-Loop Join（BNL）
+### Block Nested-Loop Join（BNL）
 
 ​	将其中一个表所有数据扫描进内存（`join_buffer`），然后再顺序扫描另外一个表，在内存中坐数据比对，满足条件的作为结果集的一部分。
 
-#### 结论
+### 结论
 
 ​	在决定哪个表做驱动表的时候，应该是两个表按照各自的条件过滤，过滤完成之后，计算参与 join 的各个字段的总数据量，数据量小的那个表，就是“小表”，应该作为驱动表。
 
-#### 参数
+### 参数
 
 - `join_buffer_size` `join_buffer`的大小，默认值256k。如果放不下表的所有数据的话，分段放。分块join
 
-#### JOIN 优化
+### JOIN 优化
 
-##### Multi-Range Read（MRR）
+#### Multi-Range Read（MRR）
 
 ​	批量回表，根据索引定位到的id放入`read_rnd_buffer`中，`read_rnd_buffer` 的大小是由 `read_rnd_buffer_size`
 
-##### Batched Key Access（BKA）
+#### Batched Key Access（BKA）
 
 ​	类似于MRR，BKA算法其实是对NLJ算法的优化。
 
-##### 使用临时表
+#### 使用临时表
 
-##### hash join
+#### hash join
 
-### group by
+## group by
 
 ​	创建内存临时表来实现的。
 
-#### group by 优化方法 
+### group by 优化方法 
 
-##### 索引
+#### 索引
 
 #### 直接排序
 
@@ -210,7 +209,7 @@
 
 ![mysql update 更新流程如](image/2e5bff4910ec189fe1ee6e2ecc7b4bbe.png)
 
-#### redo log 和 binlog 是怎么关联起来的?
+### redo log 和 binlog 是怎么关联起来的?
 
 ​	它们有一个共同的数据字段，叫 XID。崩溃恢复的时候，会按顺序扫描 redo log：
 
@@ -227,7 +226,7 @@
 
 ​	显然，如果能够将更新操作先记录在 change buffer，减少读磁盘，语句的执行速度会得到明显的提升。而且，数据读入内存是需要占用 buffer pool 的，所以这种方式还能够避免占用内存，提高内存利用率。
 
-#### 唯一索引的更新操作不能使用change buffer
+### 唯一索引的更新操作不能使用change buffer
 
 ​	对于唯一索引来说，所有的更新操作都要先判断这个操作是否违反唯一性约束。比如，要插入 (4,400) 这个记录，就要先判断现在表中是否已经存在 k=4 的记录，而这必须要将数据页读入内存才能判断。如果都已经读入到内存了，那直接更新内存会更快，就没必要使用 change buffer 了。
 
@@ -258,7 +257,7 @@
 
 ​	**当内存数据页跟磁盘数据页内容不一致的时候，我们称这个内存页为“脏页”。内存数据写入到磁盘后，内存和磁盘上的数据页的内容就一致了，称为“干净页”。**
 
-### 缓冲池（buffer pool）
+## 缓冲池（buffer pool）
 
 ​	InnoDB 用缓冲池（buffer pool）管理内存，缓冲池中的内存页有三种状态：
 
@@ -266,14 +265,14 @@
 - 第二种是，使用了并且是干净页；
 - 第三种是，使用了并且是脏页。
 
-### 刷脏页（flush）
+## 刷脏页（flush）
 
 - redo log 写满了。这时候系统会停止所有更新操作，把 checkpoint 往前推进，redo log 留出空间可以继续写。
 - 系统内存不足。当需要新的内存页，而内存不够用的时候，就要淘汰一些数据页，空出内存给别的数据页使用。如果淘汰的是“脏页”，就要先将脏页写到磁盘。
 - MySQL 认为系统“空闲”的时候。
 - 对应的就是 MySQL 正常关闭
 
-#### InnoDB 刷脏页的控制策略
+### InnoDB 刷脏页的控制策略
 
 - `innodb_io_capacity` 这个参数会告诉InnoDB磁盘能力，建议设置成磁盘的IOPS
 - `innodb_max_dirty_pages_pct`脏页比例上限，默认值是 75%。
@@ -303,12 +302,12 @@ select @a/@b;
 
 - `innodb_flush_neighbors`值为 1 的时候会有上述的“连坐”机制，值为 0 时表示不找邻居，自己刷自己的。
 
-### 数据删除
+## 数据删除
 
 - `innodb_file_per_table`控制表数据是放在系统表空间还是存储在以`.ibd`为后缀的文件中。建议ON
 - delete 命令其实只是把记录的位置，或者数据页标记为了“可复用”，但磁盘文件的大小是不会变的,造成数据“空洞”（插入数据也会造成空洞）。
 
-#### 重建表
+### 重建表
 
 ​	使用`alter table XXX engine=InnoDB`命令来重建表,**MySQL5.6版本后是Online DDL**
 
@@ -331,7 +330,7 @@ select @a/@b;
 - 可重复读是指，一个事务执行过程中看到的数据，总是跟这个事务在启动时看到的数据是一致的。当然在可重复读隔离级别下，未提交变更对其他事务也是不可见的。
 - 串行化，顾名思义是对于同一行记录，“写”会加“写锁”，“读”会加“读锁”。当出现读写锁冲突的时候，后访问的事务必须等前一个事务执行完成，才能继续执行。
 
-### 事务隔离的实现
+## 事务隔离的实现
 
 ​	在 MySQL 中，实际上每条记录在更新的时候都会同时记录一条回滚操作。记录上的最新值，通过回滚操作，都可以得到前一个状态的值（即是undo log）。
 
@@ -339,7 +338,7 @@ select @a/@b;
 
 ​	如图中看到的，在视图 A、B、C 里面，这一个记录的值分别是 1、2、4，同一条记录在系统中可以存在多个版本，就是数据库的**多版本并发控制（MVCC）**。undo log在不需要的时候才删除。也就是说，系统会判断，当没有事务再需要用到这些undo log时，回滚日志会被删除。
 
-### “快照”在MVCC的工作原理
+## “快照”在MVCC的工作原理
 
 ​	在可重复读隔离级别下，事务在启动的时候就“拍了个快照”。注意，这个快照是基于整库的。
 
@@ -410,7 +409,7 @@ insert into t(id, k) values(1,1),(2,2);
 2. **版本已提交，但是是在视图创建后提交的，不可见；**
 3. **版本已提交，而且是在视图创建前提交的，可见。**
 
-##### 更新规则
+### 更新规则
 
 ​	**更新数据都是先读后写的，而这个读，只能读当前的值，称为“当前读”（current read）。**
 
@@ -481,7 +480,7 @@ select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx
 
 ​	索引的出现其实就是为了提高数据查询的效率，就像书的目录一样。
 
-### 索引的常见模型
+## 索引的常见模型
 
 三种常见、也比较简单的数据结构，它们分别是哈希表、有序数组和搜索树。
 
@@ -489,7 +488,7 @@ select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx
 - 有序数组索引只适用于静态存储引擎
 - N 叉树由于在读写上的性能优点，以及适配磁盘的访问模式，已经被广泛应用在数据库引擎中了。
 
-### InnoDB 的索引
+## InnoDB 的索引
 
 ​	在 InnoDB 中，表都是根据**主键顺序以索引的形式存放**的，这种存储方式的表称为**索引组织表**。InnoDB 使用了 **B+ 树索引模型**，所以数据都是存储在 B+ 树中的。
 
@@ -524,7 +523,7 @@ create table T(
 - 如果语句是 select * from T where ID=500，即主键查询方式，则只需要搜索 ID 这棵 B+ 树；
 - 如果语句是 select * from T where k=5，即普通索引查询方式，则需要先搜索 k 索引树，得到 ID 的值为 500，再到 ID 索引树搜索一次。这个过程称为**回表**。
 
-#### 索引维护
+### 索引维护
 
 ​	B+ 树为了维护索引有序性，在插入新值的时候需要做必要的维护。以上面这个图为例，如果插入新的行 ID 值为 700，则只需要在 R5 的记录后面插入一个新记录。如果新插入的 ID 值为 400，就相对麻烦了，需要逻辑上挪动后面的数据，空出位置。
 
@@ -534,11 +533,11 @@ create table T(
 
 ​	**主键长度越小，普通索引的叶子节点就越小，普通索引占用的空间也就越小**
 
-#### 覆盖索引
+### 覆盖索引
 
 ​	**覆盖索引可以减少树的搜索次数，显著提升查询性能，所以使用覆盖索引是一个常用的性能优化手段。**
 
-#### 最左前缀原则
+### 最左前缀原则
 
 ​	**B+树的索引结构，可以利用索引的“最左前缀”，来定位记录。**
 
@@ -546,21 +545,21 @@ create table T(
 
 ​	如果通过调整顺序，可以少维护一个索引，那么这个顺序往往就是需要优先考虑采用的。
 
-#### 索引下推
+### 索引下推
 
 ​	MySQL5.6引入索引下推优化（index condition pushdown），可以在索引遍历过程中，对索引中包含的字段先做判断，直接过滤掉不满足条件的记录，减少回表次数。
 
-### 优化器的逻辑
+## 优化器的逻辑
 
 ​	选择索引是优化器的工作，而优化器选择索引的目的，是找到一个最优的执行方案，并用最小的代价去执行语句。
 
 ​	**扫描行数并不是唯一的判断标准，优化器还会结合是否使用临时表、是否排序等因素进行综合判断。**
 
-#### 扫描行数是怎么判断的？
+### 扫描行数是怎么判断的？
 
 ​	MySQL根据统计信息来估算记录数。这个统计信息就是索引的“区分度”。显然，一个索引上不同的值越多，这个索引的区分度就越好。而一个索引上不同的值的个数，我们称之为“基数”（cardinality）。也就是说，这个基数越大，索引的区分度越好。可以使用 `show index` 方法，看到一个索引的基数。
 
-##### MySQL 是怎样得到索引的基数的呢？
+#### MySQL 是怎样得到索引的基数的呢？
 
 ​	MySQL 采样统计的方法。采样统计的时候，InnoDB 默认会选择 N 个数据页，统计这些页面上的不同值，得到一个平均值，然后乘以这个索引的页面数，就得到了这个索引的基数。
 
@@ -624,7 +623,7 @@ create table T(
 
 ​	Next-key lock = gap lock （间隙锁） + record lock （行锁）
 
-#### 加锁规则
+### 加锁规则
 
 ​	包含了两个“原则”、两个“优化”和一个“bug”
 
@@ -646,18 +645,18 @@ create table T(
 
 ![binlog 写盘](image/9ed86644d5f39efb0efec595abb92e3e.png)
 
-#### 参数
+### 参数
 
 - `sync_binlog`	为0时，每次提交事务只write，不fsync; 为1时，表示每次提交事务都会执行fsync;为N(N>1)时，每次提交事务都会write,但累计积累N个事务后才fsync。
 - `binlog_cache_size` 控制单个线程内 `binlog cache` 所占的内存大小，如果超过了这个参数规定的大小，就要暂存到磁盘。
 
 ## `redo log`
 
-##### WAL（Wirte-Ahead Logging）
+### WAL（Wirte-Ahead Logging）
 
 ​	先写日志，再写磁盘。具体来说，当有一条记录需要更新的时候，InnoDB 引擎就会先把记录写到 redo log里面，并更新内存，这个时候更新就算完成了。同时，InnoDB 引擎会在适当的时候，将这个操作记录更新到磁盘里面，而这个更新往往是在系统比较空闲的时候做。
 
-##### `redo log`
+#### `redo log`
 
 ​	InnoDB 的 redo log 是固定大小的，比如可以配置为一组 4 个文件，每个文件的大小是 1GB，那么总共就可以记录 4GB 的操作。从头开始写，写到末尾就又回到开头循环写。
 
@@ -680,11 +679,11 @@ InnoDB 有一个后台线程，每隔 1 秒，就会把 redo log buffer 中的�
 1. 一种是，`redo log buffer` 占用的空间即将达到 `innodb_log_buffer_size` 一半的时候，后台线程会主动写盘。（注意，由于这个事务并没有提交，所以这个写盘动作只是 write，而没有调用 fsync，也就是只留在了文件系统的 `page cache`。）
 2. 另一种是，并行的事务提交的时候，顺带将这个事务的 `redo log buffer` 持久化到磁盘。（假设一个事务 A 执行到一半，已经写了一些 `redo log` 到 buffer 中，这时候有另外一个线程的事务 B 提交，如果 `innodb_flush_log_at_trx_commit` 设置的是 1，那么按照这个参数的逻辑，事务 B 要把 `redo log buffer` 里的日志全部持久化到磁盘。这时候，就会带上事务 A 在 `redo log buffer` 里的日志一起持久化到磁盘。）
 
-#### 参数
+### 参数
 
 - `innodb_flush_log_at_trx_commit` 为0时每次事务提交都只是把`redo log`留在`redo log buffer` 中；为1时每次事务提交都将`redo log` 直接持久化到磁盘;为3时表示每次事务提交都只是把`redo log`写到`page cache`;
 
-#### 组提交（`group commit`）
+### 组提交（`group commit`）
 
 ​	日志逻辑序列号（`log sequence number`，LSN）。LSN 是单调递增的，用来对应 `redo log` 的一个个写入点。每次写入长度为 length 的 redo log， LSN 的值就会加上 length。
 
@@ -699,11 +698,11 @@ InnoDB 有一个后台线程，每隔 1 秒，就会把 redo log buffer 中的�
 3. trx1 去写盘的时候，带的就是 LSN=160，因此等 trx1 返回时，所有 LSN 小于等于 160 的 redo log，都已经被持久化到磁盘；
 4. 这时候 trx2 和 trx3 就可以直接返回了。
 
-##### binlog 和 redo log 组提交
+#### binlog 和 redo log 组提交
 
 ![两阶段提交细化](image/5ae7d074c34bc5bd55c82781de670c28.png)
 
-##### 参数
+#### 参数
 
 - `binlog_group_commit_sync_delay` 参数，表示延迟多少微秒后才调用 fsync;
 - `binlog_group_commit_sync_no_delay_count` 参数，表示累积多少次以后才调用 fsync。
